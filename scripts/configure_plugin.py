@@ -31,7 +31,13 @@ def main():
     source.add_argument("--token-env", help="name of an environment variable containing the adk_ token")
     args = parser.parse_args()
     try:
-        token = json.loads(args.token_file.expanduser().read_text()).get("token", "") if args.token_file else os.environ.get(args.token_env, "")
+        if args.token_file:
+            stored = json.loads(args.token_file.expanduser().read_text())
+            if not isinstance(stored, dict):
+                raise ValueError("token file must be the JSON object saved by mint_token.py")
+            token = stored.get("token", "")
+        else:
+            token = os.environ.get(args.token_env, "")
         configure(args.environment, token)
     except (OSError, ValueError) as error:
         print(str(error), file=sys.stderr)

@@ -47,8 +47,8 @@ def mint(api, name, days, access_token, output):
                          + hints.get(error.code, "the server refused the request")) from None
     if not isinstance(result, dict) or not isinstance(result.get("token"), str) or not result["token"].startswith("adk_"):
         raise ValueError("server returned no usable AgentDeck token")
-    output.parent.mkdir(mode=0o700, parents=True, exist_ok=True)
     try:
+        output.parent.mkdir(mode=0o700, parents=True, exist_ok=True)
         fd = os.open(output, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600)
         with os.fdopen(fd, "w") as handle:
             json.dump(result, handle, indent=2)

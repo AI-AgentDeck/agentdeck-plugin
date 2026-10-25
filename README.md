@@ -121,6 +121,7 @@ dev backend, an AgentDeck token and actual conversations.
 validation and live acceptance on dev, and increase the version after the first release. Keep
 marketplace version, plugin version and MCP header equal. Reports stay private. Configure branch
 protection to require the validation and live-acceptance checks; CI alone cannot prevent bypass.
+Make `main` the repository's default branch when promoting the first stable release.
 
 Backend: <https://github.com/AI-AgentDeck/agent-backend>. Privacy:
 <https://agentdeck.eu/privacy/>. Sources can be processed by Claude and AgentDeck's model providers

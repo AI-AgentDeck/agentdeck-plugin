@@ -51,6 +51,15 @@ class TokenSetupTest(unittest.TestCase):
             self.assertNotIn("console-jwt", str(caught.exception))
             self.assertNotIn("adk_synthetic", str(caught.exception))
 
+    def test_failed_storage_identifies_the_created_token_for_revocation_without_its_secret(self):
+        with patch.object(mint.urllib.request, "build_opener") as factory, \
+                patch.object(mint.Path, "mkdir", side_effect=PermissionError("denied")):
+            factory.return_value.open.return_value.__enter__.return_value = io.StringIO(
+                json.dumps({"id": "token-id", "token": "adk_synthetic"}))
+            with self.assertRaisesRegex(ValueError, "revoke its ID token-id") as caught:
+                mint.mint("https://dev-api.agentdeck.eu", "test", 1, "console-jwt", self.output)
+            self.assertNotIn("adk_synthetic", str(caught.exception))
+
     def test_authorization_is_never_forwarded_on_redirect(self):
         self.assertIsNone(mint.NoRedirect().redirect_request(None, None, 302, "redirect", {}, "https://other.example"))
 
