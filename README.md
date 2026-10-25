@@ -7,63 +7,28 @@ AgentDeck's authenticated MCP tools handle crawling, validation and execution.
 This is the **team preview on `dev`**. Production acceptance is not complete. The first release
 will be promoted to `main` after live evaluation. This package currently targets Claude Code.
 
-## Install
+## Customer setup
 
-Use Claude Code **2.1.310 or newer**, Python **3.11 or newer** for the local helpers, and an AgentDeck
-token from the environment you intend to use. Customers create workspace-scoped tokens in Settings → Connect Claude Code once customer access is enabled.
+Use Claude Code **2.1.310 or newer** and an AgentDeck account. Python **3.11 or newer** is
+required for the plugin's local bundle helpers.
 
-In Claude Code:
+Customer connection is available only in environments where customer access has been enabled.
+Production customer access is not enabled yet. Once available:
 
-```text
-/plugin marketplace add AI-AgentDeck/agentdeck-plugin#dev
-/plugin install agentdeck@agentdeck
-```
+1. Sign in to AgentDeck and open **Settings → Connect Claude Code**.
+2. Create a named token for your business workspace.
+3. Follow the plugin installation commands shown on that page.
+4. Inside Claude Code, open the configuration dialog:
 
-Select an MCP endpoint (dev by default) and enter the token in its masked option. Restart Claude
-Code after installation or configuration changes. Never paste tokens into normal chats or git.
+   ```text
+   /plugin configure agentdeck@agentdeck
+   ```
 
-After the first release on main, a stable installation will also be available with:
+5. Select the matching environment and paste your token into its masked field. Restart Claude Code.
 
-```text
-/plugin install agentdeck --marketplace AI-AgentDeck/agentdeck-plugin
-```
-
-## Customer connection
-
-Sign up on AgentDeck and open Settings → Connect Claude Code. Create a named token, follow the install commands shown there, and enter the token in the plugin’s masked configuration. Customer tokens create agents inside their existing workspace; the backend must report `capabilities.createAgent=true`. Workspace and daily limits apply across tokens.
-
-This customer flow requires the P5 backend and console deployment. It remains behind a rollout flag in production. Internal operators use the following bootstrap helper.
-
-## Create an adk token
-
-The token endpoint must be deployed and enabled first. The console has no token-management page
-yet. Clone this repository, sign in as an admin at the matching console (dev:
-<https://dev-client-hub.agentdeck.eu>), then locate the current access token in browser DevTools:
-
-```javascript
-Object.entries(localStorage).find(([key]) => key.endsWith('.accessToken'))?.[1]
-```
-
-This is a short-lived console access token. If absent, obtain the signed-in session's access
-token; do not substitute its ID token. In a terminal, from this repository:
-
-```sh
-python3 scripts/mint_token.py --api https://dev-api.agentdeck.eu --name claude-code
-```
-
-Paste the console token into the hidden terminal prompt. The helper calls
-`POST /api/admin/api-tokens` and saves the new token to `~/.config/agentdeck/tokens/dev.json` with
-mode 0600. It prints the filename, not the secret. A 404 means token support is disabled or the
-backend feature has not been deployed; a 401 means the access token is invalid or expired.
-
-After installation, configure the plugin without putting the token in shell history:
-
-```sh
-python3 scripts/configure_plugin.py --environment dev --token-file ~/.config/agentdeck/tokens/dev.json
-```
-
-Tokens expire and can be revoked through the admin API. Use separate credentials per environment.
-See [SECURITY.md](SECURITY.md) for handling and vulnerability reports.
+Your token lets the plugin create and manage agents inside your business workspace. Workspace and
+daily usage limits apply across its tokens. You can revoke a token from the same connection page.
+Never paste tokens into normal chats or git.
 
 ## Use
 
@@ -101,6 +66,17 @@ from the backend at runtime. Updates replace a complete bundle, removing omitted
   were never started and are refunded. The current tools cannot retrieve a late result.
 
 ## Develop and validate
+
+The team preview is installed from `dev`:
+
+```text
+/plugin marketplace add AI-AgentDeck/agentdeck-plugin#dev
+/plugin install agentdeck@agentdeck
+```
+
+For AgentDeck staff and developers who need admin access, follow
+[Internal setup: create an admin token](docs/internal-setup.md). That guide covers the admin API,
+the hidden-prompt mint helper and secure configuration for team testing.
 
 ```sh
 python3 scripts/check.py

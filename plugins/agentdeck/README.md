@@ -11,10 +11,11 @@ Install the team preview:
 /plugin install agentdeck@agentdeck
 ```
 
-Select the matching environment and enter an environment-issued `adk_` admin token in the masked
+Customers obtain a business-scoped token from AgentDeck Settings → Connect Claude Code when
+customer access is enabled. Select the matching environment and enter that token in the masked
 option. Restart Claude Code. Create with `/agentdeck:create-agent <website-or-brief>`.
 Production acceptance and a supported publishing operation are required before going live.
 
-Installation, token creation, validation and known limits are in the
+Customer setup, internal admin setup, validation and known limits are in the
 [repository README](https://github.com/AI-AgentDeck/agentdeck-plugin/tree/dev#readme).
 Privacy: <https://agentdeck.eu/privacy/>. License: MIT.

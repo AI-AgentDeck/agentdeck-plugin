@@ -6,9 +6,9 @@ tokens or private business knowledge in GitHub issues.
 
 Claude Code stores the plugin's sensitive token option in its credential store. Endpoint options
 are limited to documented dev, production and local origins. The backend enforces tenant scope and
-business actions. Token creation requires an enabled admin's console login.
+business actions. Customers issue tokens from their signed-in business workspace. Admin token creation requires an enabled admin's console login.
 
-The token helper sends console credentials only to its API-origin allowlist, refuses redirects,
+The internal admin token helper sends console credentials only to its API-origin allowlist, refuses redirects,
 and writes the returned token to a new private file. Configuration sends secrets over stdin rather
 than process arguments. Treat token files, business bundles and run artifacts as confidential.
 
