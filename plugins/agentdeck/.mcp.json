@@ -5,7 +5,7 @@
       "url": "${user_config.mcp_url}",
       "headers": {
         "Authorization": "Bearer ${user_config.token}",
-        "X-Agentdeck-Plugin-Version": "0.1.0"
+        "X-Agentdeck-Plugin-Version": "0.2.0"
       }
     }
   }

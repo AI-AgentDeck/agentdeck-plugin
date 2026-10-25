@@ -39,6 +39,15 @@ class BundlePersistenceTest(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "another bundle or environment"):
             bundle.persist("prepare", self.source, "club", "prod")
 
+    def test_retrying_another_workspace_or_admin_identity_is_refused(self):
+        tenant = "00000000-0000-4000-8000-000000000222"
+        first = bundle.persist("prepare", self.source, "club", "dev", tenant_id=tenant)
+        repeated = bundle.persist("prepare", self.source, "club", "dev", tenant_id=tenant)
+        self.assertEqual(first["idempotencyKey"], repeated["idempotencyKey"])
+        for other in [None, "00000000-0000-4000-8000-000000000333"]:
+            with self.assertRaisesRegex(ValueError, "workspace"):
+                bundle.persist("prepare", self.source, "club", "dev", tenant_id=other)
+
     def test_a_changed_candidate_cannot_reuse_an_uncertain_create(self):
         first = bundle.persist("prepare", self.source, "club", "dev")
         self.document["display-name"] = "Changed"

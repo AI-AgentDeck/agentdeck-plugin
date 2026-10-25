@@ -11,7 +11,10 @@ tested preview, a portable bundle and any unresolved business questions. Configu
 Read [connection and authorization](../../references/connection.md) first. Use the plugin's
 `agentdeck` MCP server (`mcp__plugin_agentdeck_agentdeck__*`).
 
-1. Call `whoami`. Verify the selected environment, ADMIN scope for creation, compatibility and caps.
+1. Call `whoami`. Verify the selected environment, scope, compatibility and caps. ADMIN creates a
+   new business; TENANT creates inside its existing workspace when `capabilities.createAgent=true`.
+   For a tenant, save its returned tenant ID in private run state and never take another workspace
+   from user input. A missing or false customer capability ends creation with setup/update instructions.
    An authentication failure ends the run with setup instructions; do not ask for a token in chat.
    Read `get_spec` and the available tool schemas. They define the actual bundle and operation inputs.
 2. For a website, start `crawl` and poll its returned ID as described in
@@ -32,10 +35,12 @@ Read [connection and authorization](../../references/connection.md) first. Use t
    business goal, sources, languages, actions and environment that will be created. An existing
    instruction to create in this environment authorizes creation; clarify unresolved scope before
    writing. Save the candidate locally and run the bundled `scripts/bundle.py prepare` helper with
-   a descriptive slug and `--environment dev|prod|local`. It records a stable idempotency key before the first create attempt.
+   a descriptive slug and `--environment dev|prod|local`. For TENANT also pass `--tenant-id <whoami.tenantId>`.
+   It records a stable idempotency key before the first create attempt, bound to this environment and workspace.
 6. Send the validated bundle as one JSON string to `create_agent`, using that recorded key. Retry
    an uncertain create only with exactly the same bundle and key. Save returned IDs and links in
-   the private run state, separate from the portable bundle. The present create tool does not
+   the private run state, separate from the portable bundle. For TENANT, verify the result's tenant
+   matches `whoami`; stop and report a mismatch. The present create tool does not
    accept a crawl ID or file bytes: discovered URLs go into the bundle; uploads require the new
    agent ID. Follow the backend contract for file ingestion and indexing verification.
 7. Poll `get_agent_status` until `TEST`, `crawled=true`, no failed or unfinished refresh, and the key
@@ -54,3 +59,5 @@ Read [connection and authorization](../../references/connection.md) first. Use t
 The helper is `${CLAUDE_PLUGIN_ROOT}/scripts/bundle.py`; run `--help` for its arguments. It performs
 local persistence checks; `validate_agent` remains the configuration validator. When local file
 tools are unavailable, report the missing bundle artifact rather than claiming it was saved.
+Use Write/Edit for candidate and report files. Run the helper directly with `python3`; it creates
+its output directories, so no shell `mkdir`, `cat` or command chain is needed.

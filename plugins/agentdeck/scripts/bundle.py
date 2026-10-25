@@ -85,7 +85,7 @@ def atomic_write(path, data):
             temporary.unlink(missing_ok=True)
 
 
-def persist(command, source, slug, environment=None, replace=False):
+def persist(command, source, slug, environment=None, replace=False, tenant_id=None):
     if len(slug) > 80 or not re.fullmatch(r"[a-z0-9]+(?:-[a-z0-9]+)*", slug):
         raise ValueError("slug must contain lowercase words separated by hyphens, at most 80 characters")
     data = read_bundle(source)
@@ -100,6 +100,8 @@ def persist(command, source, slug, environment=None, replace=False):
         raise ValueError("local bundle differs; use update-agent or explicitly replace the intended local artifact")
     result = {"bundlePath": str(output), "sha256": digest}
     if command == "prepare":
+        if tenant_id is not None:
+            tenant_id = str(uuid.UUID(tenant_id))
         directory = Path(".agentdeck-work") / slug
         private_directory(directory.parent)
         private_directory(directory)
@@ -110,10 +112,11 @@ def persist(command, source, slug, environment=None, replace=False):
             fd = os.open(state_path, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600)
         except FileExistsError:
             state = json.loads(state_path.read_text())
-            if state.get("createBundleHash") != digest or state.get("environment") != environment:
-                raise ValueError("an earlier create used another bundle or environment; resolve it before creating again")
+            if (state.get("createBundleHash") != digest or state.get("environment") != environment
+                    or state.get("tenantId") != tenant_id):
+                raise ValueError("an earlier create used another bundle or environment or workspace; resolve it before creating again")
         else:
-            state = {"environment": environment, "idempotencyKey": str(uuid.uuid4()),
+            state = {"environment": environment, "tenantId": tenant_id, "idempotencyKey": str(uuid.uuid4()),
                      "createBundleHash": digest, "createdAt": datetime.now(timezone.utc).isoformat()}
             with os.fdopen(fd, "w") as handle:
                 json.dump(state, handle, indent=2)
@@ -132,12 +135,13 @@ def main():
     parser.add_argument("--input", required=True, help="bundle JSON file, or - for stdin")
     parser.add_argument("--slug", required=True)
     parser.add_argument("--environment", choices=["dev", "prod", "local"])
+    parser.add_argument("--tenant-id", help="workspace UUID from whoami for a TENANT token; omit for ADMIN")
     parser.add_argument("--replace", action="store_true", help="replace a deliberately updated local bundle")
     args = parser.parse_args()
     if args.command == "prepare" and (args.environment is None or args.replace):
         parser.error("prepare requires --environment and cannot replace a different bundle")
     try:
-        print(json.dumps(persist(args.command, args.input, args.slug, args.environment, args.replace)))
+        print(json.dumps(persist(args.command, args.input, args.slug, args.environment, args.replace, args.tenant_id)))
     except (OSError, ValueError, KeyError) as error:
         print("Bundle not saved: " + str(error), file=sys.stderr)
         return 1

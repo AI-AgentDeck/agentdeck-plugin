@@ -13,13 +13,16 @@ environment with the same credential. Production creation or publishing needs an
 that explicitly targets production; a configured production URL alone is not that instruction.
 
 Record the returned scope, supported models/languages, plugin compatibility and remaining caps.
-New-agent creation currently requires ADMIN; a tenant token can only act on its own existing
-agents. Read operations succeeding does not grant creation rights. On `plugin_outdated`,
+ADMIN can create new businesses. TENANT can create and manage agents only in its own workspace,
+when `whoami.capabilities.createAgent` is true. A missing or false capability requires the backend's
+customer-plugin feature to be enabled and a compatible plugin. Read operations succeeding does not grant creation rights. On `plugin_outdated`,
 `plugin_version_missing` or `plugin_version_unreadable`, follow the returned update instructions
 and stop before writes. A missing or unreadable header can also mean a proxy is stripping it.
 
-For 401 or no connection, explain how to issue an environment-specific `adk_` token using the
-repository's token helper, then configure `agentdeck@agentdeck` in Claude Code. A 404 can mean
+For 401 or no connection, direct customers to Settings → Connect Claude Code in their environment's
+AgentDeck console, where they create their own workspace-scoped token. Internal operators can use
+the repository's admin token helper. Configure `agentdeck@agentdeck` using its masked token option;
+never ask customers to obtain an admin login or copy a console session token. A 404 can mean
 the backend feature is disabled or this branch has not been deployed. A 503 is an operational
 failure, not proof that the token should be replaced. A 429 or `cap_reached` ends costly work;
 show the reset/remaining allowance instead of creating another token or looping.
