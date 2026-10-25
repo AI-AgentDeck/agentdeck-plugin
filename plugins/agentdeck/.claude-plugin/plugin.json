@@ -1,0 +1,29 @@
+{
+  "name": "agentdeck",
+  "displayName": "AgentDeck",
+  "version": "0.1.0",
+  "description": "Create, refine and test business agents using AgentDeck's MCP tools. Return a preview, portable bundle and evidence-based quality report.",
+  "author": { "name": "AI-AgentDeck", "url": "https://github.com/AI-AgentDeck" },
+  "repository": "https://github.com/AI-AgentDeck/agentdeck-plugin",
+  "homepage": "https://github.com/AI-AgentDeck/agentdeck-plugin#readme",
+  "privacyPolicyUrl": "https://agentdeck.eu/privacy/",
+  "license": "MIT",
+  "keywords": ["agentdeck", "business-agents", "knowledge-base", "mcp"],
+  "userConfig": {
+    "mcp_url": {
+      "type": "string",
+      "title": "AgentDeck environment",
+      "description": "Use the environment that issued your token. Team evaluation starts on dev.",
+      "default": "https://dev-api.agentdeck.eu/mcp",
+      "options": ["https://dev-api.agentdeck.eu/mcp", "https://api.agentdeck.eu/mcp", "http://localhost:8080/mcp"],
+      "required": true
+    },
+    "token": {
+      "type": "string",
+      "title": "AgentDeck API token",
+      "description": "An adk_ token issued by an admin in this environment. New-agent creation currently requires ADMIN scope.",
+      "sensitive": true,
+      "required": true
+    }
+  }
+}

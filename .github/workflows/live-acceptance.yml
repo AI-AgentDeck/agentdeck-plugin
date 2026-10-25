@@ -1,0 +1,70 @@
+name: live-acceptance
+
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize, reopened, ready_for_review]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: agentdeck-live-dev
+  cancel-in-progress: false
+
+jobs:
+  live-acceptance:
+    runs-on: ubuntu-latest
+    timeout-minutes: 110
+    environment: dev-evaluations
+    steps:
+      - name: Require trusted dev promotion
+        env:
+          EVENT: ${{ github.event_name }}
+          HEAD_BRANCH: ${{ github.head_ref }}
+          HEAD_REPO: ${{ github.event.pull_request.head.repo.full_name }}
+          REPOSITORY: ${{ github.repository }}
+          REF: ${{ github.ref_name }}
+        run: |
+          if [ "$EVENT" = pull_request ]; then
+            test "$HEAD_REPO" = "$REPOSITORY" && test "$HEAD_BRANCH" = dev || { echo 'Release acceptance requires a dev pull request from this repository.'; exit 1; }
+          else
+            test "$REF" = dev || { echo 'Manual live acceptance runs only from dev.'; exit 1; }
+          fi
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: npm install --global @anthropic-ai/claude-code@2.1.310
+      - run: python3 scripts/check.py
+      - run: python3 scripts/check_release.py --base origin/main
+      - name: Install and configure the local dev package
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          AGENTDECK_EVAL_TOKEN: ${{ secrets.AGENTDECK_EVAL_TOKEN }}
+        run: |
+          test -n "$ANTHROPIC_API_KEY" && test -n "$AGENTDECK_EVAL_TOKEN" || { echo 'Set ANTHROPIC_API_KEY and AGENTDECK_EVAL_TOKEN in dev-evaluations. Live acceptance has not run.'; exit 1; }
+          claude plugin marketplace add .
+          claude plugin install agentdeck@agentdeck
+          python3 scripts/configure_plugin.py --environment dev --token-env AGENTDECK_EVAL_TOKEN
+      - name: Evaluate five real businesses on dev
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: >-
+          claude plugin eval agentdeck@agentdeck --eval-dir evals-live --mocks off
+          --runs 1 --ablation none --trust-plugin --no-publish --max-cost-usd 20
+          --model sonnet --judge-model haiku --output-dir reports/live
+          --json reports/live/result.json
+          --allow-tools Write Edit "Bash(python3 *)"
+          "WebFetch(domain:dentalangels.hu)"
+          "WebFetch(domain:ar-kfz-technik.e-m-ritter.chatgpt.site)"
+          "WebFetch(domain:padelclub-plattling.de)" "WebFetch(domain:www.padelclub-plattling.de)"
+          "WebFetch(domain:norinohi.com)" "WebFetch(domain:www.norinohi.com)"
+          "WebFetch(domain:schmidt-export.com)" "WebFetch(domain:www.schmidt-export.com)"
+          "mcp__plugin_agentdeck_agentdeck__*"
