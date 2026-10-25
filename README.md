@@ -10,7 +10,7 @@ will be promoted to `main` after live evaluation. This package currently targets
 ## Install
 
 Use Claude Code **2.1.310 or newer**, Python **3.11 or newer** for the local helpers, and an AgentDeck
-admin token from the environment you intend to use. New-agent creation is admin-only today.
+token from the environment you intend to use. Customers create workspace-scoped tokens in Settings → Connect Claude Code once customer access is enabled.
 
 In Claude Code:
 
@@ -27,6 +27,12 @@ After the first release on main, a stable installation will also be available wi
 ```text
 /plugin install agentdeck --marketplace AI-AgentDeck/agentdeck-plugin
 ```
+
+## Customer connection
+
+Sign up on AgentDeck and open Settings → Connect Claude Code. Create a named token, follow the install commands shown there, and enter the token in the plugin’s masked configuration. Customer tokens create agents inside their existing workspace; the backend must report `capabilities.createAgent=true`. Workspace and daily limits apply across tokens.
+
+This customer flow requires the P5 backend and console deployment. It remains behind a rollout flag in production. Internal operators use the following bootstrap helper.
 
 ## Create an adk token
 

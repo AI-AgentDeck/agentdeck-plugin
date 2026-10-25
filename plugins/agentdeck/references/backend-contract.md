@@ -42,6 +42,11 @@ agent can still be pending or failed; inspect it before grading.
 
 ## Applying configuration
 
+An ADMIN create provisions a new business and its first agent. A TENANT create adds an agent to
+the workspace in the token. It never accepts a caller-selected tenant ID. Workspace-wide agent
+limits and daily budgets are shared across that business's tokens; replacing a token does not
+reset those limits. Customer access is controlled by the backend's rollout flag.
+
 Create with a recorded idempotency key and the validated JSON string. After a network failure,
 repeat the same key and byte-equivalent bundle; changing the document on an uncertain create
 is unsafe. Store IDs, endpoint and version only in private run state. The portable bundle is

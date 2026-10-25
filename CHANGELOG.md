@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.2.0 — unreleased
+
+- Customer workspace creation using backend capabilities and tenant-scoped tokens.
+- Customer connection instructions and workspace-bound local creation keys.
+
 ## 0.1.0 — unreleased
 
 - Claude Code marketplace and create, update, test and go-live skills.
