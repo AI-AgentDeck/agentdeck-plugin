@@ -24,7 +24,9 @@ jobs:
         with:
           python-version: '3.12'
       - run: npm install --global @anthropic-ai/claude-code@2.1.310
+      - run: npm install --global @openai/codex@0.164.0
       - run: python3 scripts/check.py
+      - run: python3 scripts/check_codex.py
       - run: python3 -m unittest discover -s tests -v
       - name: Check release version
         if: github.event_name == 'pull_request' && github.base_ref == 'main'

@@ -1,0 +1,4 @@
+interface:
+  display_name: "AgentDeck Test Agent"
+  short_description: "Evaluate agents against approved sources"
+  default_prompt: "Use $agentdeck:test-agent to evaluate agents against approved sources."

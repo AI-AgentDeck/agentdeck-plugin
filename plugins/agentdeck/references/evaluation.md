@@ -22,7 +22,7 @@ inside one case reuse its thread. Evaluate source correctness separately from st
 INCOMPLETE if it times out, returns unanswered messages, lacks source evidence or has no judge
 verdict. Mark an actual started error FAIL. Do not score an infrastructure failure as poor tone.
 
-Invoke `agentdeck:chat-judge` as a fresh subagent with only the business goal, approved source
+Use [the runtime guide](runtime.md) to invoke the independent judge as a fresh subagent with only the business goal, approved source
 evidence, expectations and complete transcripts. Do not send your desired verdict or ask it to
 justify the configuration. Its PASS/FAIL/INCOMPLETE verdicts must cite evidence. Hard blockers are
 invented facts, wrong language, private prompt/credential disclosure, unsafe scope behavior and
