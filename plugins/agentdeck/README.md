@@ -26,7 +26,7 @@ workspace token without saving it in configuration or command arguments. In a ne
 use `$agentdeck:create-agent Create a preview for <website> in dev.` Shared workflows preserve
 the same workspace limits, validation, knowledge and test-isolation rules.
 
-Production acceptance and a supported publishing operation are required before going live.
+Production acceptance comes before placing an agent on a customer's website; a READY agent needs no other activation.
 
 Customer setup, internal admin setup, validation and known limits are in the
 [repository README](https://github.com/AI-AgentDeck/agentdeck-plugin/tree/dev#readme).

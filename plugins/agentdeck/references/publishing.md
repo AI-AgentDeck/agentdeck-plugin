@@ -8,7 +8,9 @@ conversations anywhere else are real.
 Publishing is therefore a handover, not an API call. Prepare it with:
 
 - Agent UUID, environment, reviewed version and portable bundle path.
-- The server-returned widget snippet, and the websites the user wants it on.
+- The `widgetSnippet` a create or update returned (or the client hub's Integrations tab shows), and
+  the websites the user wants it on. An environment that checks declared domains refuses others until
+  an operator adds them.
 - Acceptance report and unresolved business or integration questions.
 - Channels requested (WhatsApp, Instagram, Messenger, phone) and the client hub flows that connect them.
 
