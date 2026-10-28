@@ -1,0 +1,4 @@
+interface:
+  display_name: "AgentDeck Create Agent"
+  short_description: "Create and evaluate a business agent"
+  default_prompt: "Use $agentdeck:create-agent to create and evaluate a business agent."

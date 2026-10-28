@@ -1,15 +1,17 @@
 # AgentDeck plugin
 
-This repository packages Claude Code skills and an MCP connection. The backend owns tool schemas,
+This repository packages shared skills for Claude Code and Codex, with runtime-specific MCP connections. The backend owns tool schemas,
 authorization, configuration validation and execution. Read its live `get_spec` and tools/list;
 never copy its production schema into the plugin or guess an unavailable operation.
 
 The marketplace and plugin are both named `agentdeck`. The repository is `agentdeck-plugin`.
-Keep the marketplace version, plugin version and MCP version header equal. `dev` is the team
+Keep all runtime manifest versions and MCP version headers equal. `dev` is the team
 branch; `main` is the release branch. A main pull request needs passing live acceptance on dev.
 
 Use `python3 scripts/check.py` and `python3 -m unittest discover -s tests -v` for offline checks.
-`claude plugin validate --strict` is authoritative for Claude packaging. Model evaluations cost
+`claude plugin validate --strict` is authoritative for Claude packaging.
+Run `python3 scripts/check_codex.py` to install into an isolated Codex home and verify skill
+discovery and authenticated MCP handshake against a local synthetic server, without model calls. Model evaluations cost
 real usage; scope runs and keep reports local. Fixtures test orchestration, not real agent quality.
 Never mark a live gate passed from a mock run, a skipped case or an unjudged transcript.
 

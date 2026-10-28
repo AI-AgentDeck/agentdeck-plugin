@@ -1,0 +1,4 @@
+interface:
+  display_name: "AgentDeck Go Live"
+  short_description: "Prepare a reviewed publishing handover"
+  default_prompt: "Use $agentdeck:go-live to prepare a reviewed publishing handover."

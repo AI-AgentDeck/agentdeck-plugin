@@ -1,12 +1,12 @@
 # Establish the caller and environment
 
-The installed MCP server is `agentdeck`. Claude Code exposes its tools with the prefix
-`mcp__plugin_agentdeck_agentdeck__`. The connection supplies the token and plugin-version header;
+Read [the runtime guide](runtime.md) for setup, tool discovery and paths.
+The installed MCP server is `agentdeck`. The connection supplies the token and plugin-version header;
 never ask the user to paste credentials into a conversation, use Bash to print stored options,
-or put a token in a bundle, report, URL or source ledger.
+or put a token in a bundle, report, URL or source ledger. Do not inspect credential environment variables.
 
-Call `whoami` before other operations. Match its `environment` with the endpoint shown in the
-invoked skill: dev-api → dev, api.agentdeck.eu → prod, localhost → local. An unexpected or missing
+Call `whoami` before other operations. Match its `environment` with the selected runtime endpoint:
+dev-api → dev, api.agentdeck.eu → prod, localhost → local. An unexpected or missing
 environment ends the run before writes. Explain which endpoint/profile differed and let the
 operator correct installation settings. Do not automatically switch endpoints or retry another
 environment with the same credential. Production creation or publishing needs an instruction
@@ -21,7 +21,7 @@ and stop before writes. A missing or unreadable header can also mean a proxy is 
 
 For 401 or no connection, direct customers to Settings → Connect Claude Code in their environment's
 AgentDeck console, where they create their own workspace-scoped token. Internal operators can use
-the repository's admin token helper. Configure `agentdeck@agentdeck` using its masked token option;
+the repository's admin token helper. Use the runtime guide to configure the connection;
 never ask customers to obtain an admin login or copy a console session token. A 404 can mean
 the backend feature is disabled or this branch has not been deployed. A 503 is an operational
 failure, not proof that the token should be replaced. A 429 or `cap_reached` ends costly work;

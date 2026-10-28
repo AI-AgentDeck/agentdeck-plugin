@@ -1,0 +1,4 @@
+interface:
+  display_name: "AgentDeck Update Agent"
+  short_description: "Update agent configuration and knowledge"
+  default_prompt: "Use $agentdeck:update-agent to update agent configuration and knowledge."

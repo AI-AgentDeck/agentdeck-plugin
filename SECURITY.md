@@ -5,7 +5,10 @@ and reproduction steps without credentials or customer transcripts. Do not publi
 tokens or private business knowledge in GitHub issues.
 
 Claude Code stores the plugin's sensitive token option in its credential store. Endpoint options
-are limited to documented dev, production and local origins. The backend enforces tenant scope and
+are limited to documented dev, production and local origins. Codex reads its token from the
+process environment; its launcher uses a hidden terminal prompt or an explicit token source and
+passes the token only in the child environment. It does not persist tokens or modify user config.
+Use the launcher to select a known endpoint, and treat that process environment as confidential. The backend enforces tenant scope and
 business actions. Customers issue tokens from their signed-in business workspace. Admin token creation requires an enabled admin's console login.
 
 The internal admin token helper sends console credentials only to its API-origin allowlist, refuses redirects,

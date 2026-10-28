@@ -1,15 +1,14 @@
 ---
 name: create-agent
-description: Create an AgentDeck business agent from a website, local documents or a business brief, then validate and test its preview.
-argument-hint: "<website URL | local document | business brief>"
+description: Create an AgentDeck business agent or preview from a website, local documents or a business brief, including connection setup when authentication is missing, then validate and test it.
 ---
 
 Create a business-specific agent with configured prompts and searchable knowledge. Finish with a
-tested preview, a portable bundle and any unresolved business questions. Configured MCP endpoint:
-`${user_config.mcp_url}`. Use this request as the business input: $ARGUMENTS.
+tested preview, a portable bundle and any unresolved business questions. Use the user’s request
+as the business input.
 
-Read [connection and authorization](../../references/connection.md) first. Use the plugin's
-`agentdeck` MCP server (`mcp__plugin_agentdeck_agentdeck__*`).
+Read [connection and authorization](../../references/connection.md) first. Use the plugin's `agentdeck` MCP server and follow
+[the runtime guide](../../references/runtime.md) for paths, tools and the independent judge.
 
 1. Call `whoami`. Verify the selected environment, scope, compatibility and caps. ADMIN creates a
    new business; TENANT creates inside its existing workspace when `capabilities.createAgent=true`.
@@ -46,7 +45,7 @@ Read [connection and authorization](../../references/connection.md) first. Use t
 7. Poll `get_agent_status` until `TEST`, `crawled=true`, no failed or unfinished refresh, and the key
    is ready where reported. Follow the bounded polling rules. `TEST` is infrastructure readiness,
    not a quality verdict. Run [the acceptance checklist](../../references/evaluation.md) on fresh
-   test threads, invoke `agentdeck:chat-judge` with the source evidence and transcripts, and make
+   test threads, invoke the independent judge using the runtime guide with the source evidence and transcripts, and make
    at most two correction rounds through `get_agent` → validate → `update_agent`. Wait for each
    refresh and retest affected cases. Account for `inFlight` and `failed` results exactly as the
    backend contract describes. Never count an unanswered or unjudged case as passing.
@@ -54,10 +53,10 @@ Read [connection and authorization](../../references/connection.md) first. Use t
    the final id-free configuration to `./agentdeck/<slug>.json` (`--replace` for the candidate prepared by this same run). Report the agent ID, environment,
    version, preview link, widget snippet when returned, test verdicts with evidence and remaining
    gaps. Write the report to `.agentdeck-work/<slug>/report.md`. Distinguish ready for review from
-   blocked or failed acceptance. Publishing is handled by `/agentdeck:go-live`.
+   blocked or failed acceptance. Publishing is handled by the `go-live` skill.
 
-The helper is `${CLAUDE_PLUGIN_ROOT}/scripts/bundle.py`; run `--help` for its arguments. It performs
+The helper is the bundled `scripts/bundle.py` (resolve its path using the runtime guide); run `--help` for its arguments. It performs
 local persistence checks; `validate_agent` remains the configuration validator. When local file
 tools are unavailable, report the missing bundle artifact rather than claiming it was saved.
-Use Write/Edit for candidate and report files. Run the helper directly with `python3`; it creates
+Use the runtime’s file-writing tools for candidate and report files. Run the helper directly with `python3`; it creates
 its output directories, so no shell `mkdir`, `cat` or command chain is needed.

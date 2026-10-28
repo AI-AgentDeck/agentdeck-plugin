@@ -1,10 +1,9 @@
 ---
 name: update-agent
 description: Inspect and revise an existing AgentDeck agent's prompts, settings or knowledge, preserve unrelated configuration and test the change.
-argument-hint: "<agent UUID> <requested change>"
 ---
 
-Configured MCP endpoint: `${user_config.mcp_url}`. Requested change: $ARGUMENTS.
+Use the user’s request as the agent ID and requested change.
 Read [connection](../../references/connection.md) and [the backend contract](../../references/backend-contract.md).
 
 1. Call `whoami`, verify environment and scope, then `get_spec` and `get_agent` for the supplied
@@ -32,7 +31,7 @@ Read [connection](../../references/connection.md) and [the backend contract](../
    independent judge and at most two correction rounds. Stop on operational failures or exhausted
    caps instead of looping.
 7. Export again and save the portable bundle using
-   `${CLAUDE_PLUGIN_ROOT}/scripts/bundle.py save --input <export.json> --slug <slug>`.
+   the bundled `scripts/bundle.py save --input <export.json> --slug <slug>` (see the runtime guide).
    The input is the bundle object, not its response envelope. Use `--replace` only for a local
    bundle the user asked to update. Report the applied version, differences, test outcomes,
    unresolved warnings and preview link if known. Never say a live agent has been sandboxed merely

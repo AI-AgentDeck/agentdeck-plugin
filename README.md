@@ -1,19 +1,25 @@
-# AgentDeck for Claude Code
+# AgentDeck for Claude Code and Codex
 
 Turn a business website, approved documents or a brief into an AgentDeck agent with configured
-prompts, indexed knowledge and a tested preview. Setup reasoning runs in your Claude Code session;
+prompts, indexed knowledge and a tested preview. Setup reasoning runs in your Claude Code or Codex session;
 AgentDeck's authenticated MCP tools handle crawling, validation and execution.
 
 This is the **team preview on `dev`**. Production acceptance is not complete. The first release
-will be promoted to `main` after live evaluation. This package currently targets Claude Code.
+will be promoted to `main` after live evaluation. One repository packages both runtimes with shared
+skills and separate MCP configuration.
 
 ## Customer setup
 
-Use Claude Code **2.1.310 or newer** and an AgentDeck account. Python **3.11 or newer** is
-required for the plugin's local bundle helpers.
+Use an AgentDeck account and Python **3.11 or newer** for local bundle helpers.
+Choose the runtime you use below. Tokens from the existing **Connect Claude Code** settings page
+work with either runtime; that page currently shows Claude installation instructions.
 
 Customer connection is available only in environments where customer access has been enabled.
-Production customer access is not enabled yet. Once available:
+Production customer access is not enabled yet; use the dev console for this preview.
+
+### Claude Code
+
+Use Claude Code **2.1.310 or newer**.
 
 1. Sign in to AgentDeck and open **Settings → Connect Claude Code**.
 2. Create a named token for your business workspace.
@@ -30,7 +36,72 @@ Your token lets the plugin create and manage agents inside your business workspa
 daily usage limits apply across its tokens. You can revoke a token from the same connection page.
 Never paste tokens into normal chats or git.
 
+### Codex CLI
+
+Use Codex CLI **0.164.0 or newer**. The native package and launcher are tested with 0.164.0.
+The IDE extension is not an installation target for this package.
+
+Run these commands separately in your terminal:
+
+```sh
+codex plugin marketplace add AI-AgentDeck/agentdeck-plugin --ref dev
+```
+
+```sh
+codex plugin add agentdeck@agentdeck
+```
+
+Create a workspace token in AgentDeck **Settings → Connect Claude Code**. To start a session with
+an explicit environment and a hidden token prompt, obtain the launcher from this repository:
+
+```sh
+git clone --branch dev https://github.com/AI-AgentDeck/agentdeck-plugin.git
+```
+
+Run the launcher from the directory where you want bundles and reports to be written. Replace
+`/path/to` with the parent of your clone:
+
+```sh
+python3 /path/to/agentdeck-plugin/plugins/agentdeck/scripts/run_codex.py --environment dev
+```
+
+Paste the token into the terminal's hidden prompt. The launcher passes it only to that Codex
+process, supplies the matching MCP endpoint/version and does not save it to disk or shell history.
+You log into Codex separately using your usual Codex account. This AgentDeck token does not replace
+Codex authentication or create an OpenAI API key.
+
+Start a new session after installation or an update. In Codex, use a bundled skill:
+
+```text
+$agentdeck:create-agent Create a preview for https://agentdeck.eu/ in dev.
+```
+
+The other skills are `$agentdeck:update-agent`, `$agentdeck:test-agent` and `$agentdeck:go-live`.
+You can also describe the AgentDeck task normally. An independent judge requires a host that can
+start a fresh agent; without one, acceptance remains INCOMPLETE with artifacts ready for review.
+
+For automation, use `--token-env NAME` or `--token-file /private/token.json` instead of the prompt.
+The file format is a JSON object with a `token` field, as written by the internal mint helper.
+Append Codex options after `--`, such as `-- --cd /path/to/business-workspace`. The launcher supports
+`dev`, `prod` and `local`; production customer access remains disabled until separately released.
+Do not put a token directly in command arguments or paste it into a Codex conversation.
+
+For dev-only sessions, you may instead supply `AGENTDECK_TOKEN` securely through your existing
+process environment and start Codex normally. The packaged connection defaults to dev. Use the
+launcher when selecting another environment. To update the cached package:
+
+```sh
+codex plugin marketplace upgrade agentdeck
+codex plugin add agentdeck@agentdeck
+```
+
+Update the launcher checkout with `git pull --ff-only` and start a new session. Installation and
+connection behavior follows the [OpenAI plugin packaging guide](https://developers.openai.com/plugins/build/plugins)
+and [Codex MCP configuration](https://learn.chatgpt.com/docs/extend/mcp).
+
 ## Use
+
+Claude Code commands (run each separately):
 
 ```text
 /agentdeck:create-agent https://agentdeck.eu/
@@ -80,9 +151,14 @@ the hidden-prompt mint helper and secure configuration for team testing.
 
 ```sh
 python3 scripts/check.py
+python3 scripts/check_codex.py
 python3 -m unittest discover -s tests -v
 claude --plugin-dir ./plugins/agentdeck
 ```
+
+`scripts/check_codex.py` uses a disposable Codex home and a synthetic local MCP server to check
+installation, shared skill discovery, bearer/version headers and endpoint selection without model
+calls. This is a packaging/connection smoke check, not live business acceptance.
 
 A local `--plugin-dir` session has its own identity/options. The configuration helper targets the
 marketplace-installed `agentdeck@agentdeck` package. Configure local options inside that session.
@@ -101,10 +177,10 @@ dev backend, an AgentDeck token and actual conversations.
 
 `dev` is the team branch; `main` is the release branch. Main pull requests come from dev, pass
 validation and live acceptance on dev, and increase the version after the first release. Keep
-marketplace version, plugin version and MCP header equal. Reports stay private. Configure branch
+Claude and Codex manifest versions and MCP headers equal. Reports stay private. Configure branch
 protection to require the validation and live-acceptance checks; CI alone cannot prevent bypass.
 Make `main` the repository's default branch when promoting the first stable release.
 
 Backend: <https://github.com/AI-AgentDeck/agent-backend>. Privacy:
-<https://agentdeck.eu/privacy/>. Sources can be processed by Claude and AgentDeck's model providers
+<https://agentdeck.eu/privacy/>. Sources can be processed by your selected runtime and AgentDeck's model providers
 as part of the requested workflow. License: [MIT](LICENSE).

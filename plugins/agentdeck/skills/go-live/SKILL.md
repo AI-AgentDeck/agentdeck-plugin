@@ -1,10 +1,9 @@
 ---
 name: go-live
 description: Check an AgentDeck preview's acceptance evidence and prepare its domain, widget and channel publishing handover.
-argument-hint: "<agent UUID> <approved domain>"
 ---
 
-Configured MCP endpoint: `${user_config.mcp_url}`. Publishing request: $ARGUMENTS.
+Use the user’s request as the agent ID and approved publishing domain.
 Read [connection](../../references/connection.md) and [publishing](../../references/publishing.md).
 
 Call `whoami`, `get_agent` and `get_agent_status` for the requested agent. Verify the environment,

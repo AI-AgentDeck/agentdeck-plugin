@@ -1,10 +1,9 @@
 ---
 name: test-agent
 description: Evaluate an existing AgentDeck agent against approved business sources with isolated conversations and an independent judge.
-argument-hint: "<agent UUID> [source files or test focus]"
 ---
 
-Configured MCP endpoint: `${user_config.mcp_url}`. Test request: $ARGUMENTS.
+Use the user’s request as the agent ID and test focus.
 Read [connection](../../references/connection.md), [the backend contract](../../references/backend-contract.md)
 and [evaluation](../../references/evaluation.md).
 
@@ -22,11 +21,11 @@ and [evaluation](../../references/evaluation.md).
    running and charged; do not resend it or start a continuation on that thread while unresolved.
    A `failed` turn stays charged and fails that case. No polling API currently retrieves an
    in-flight result; mark the case incomplete and explain the limitation.
-4. Send sources, expected behavior and transcripts to `agentdeck:chat-judge`. Its read-only review
+4. Send sources, expected behavior and transcripts to the independent judge described in the runtime guide. Its read-only review
    must not change the agent. An unavailable judge leaves cases unjudged. Mark invented facts,
    incorrect language, prompt/credential disclosure and false action confirmations as blockers.
    Record unsupported or unobservable side-effect checks rather than claiming them passed.
 5. Report per-case PASS, FAIL or INCOMPLETE, evidence and overall acceptance. Store transcripts
    and the report under `.agentdeck-work/<slug>/`. Separate mock-server orchestration results
    from real backend conversations. Testing alone does not authorize editing or publishing;
-   use `/agentdeck:update-agent` for requested corrections.
+   use the `update-agent` skill for requested corrections.
