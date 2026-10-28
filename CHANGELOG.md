@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.4.0 — unreleased
+
+- Agents are PREPARING, then READY; the TEST and LIVE stages are gone. A READY agent answers wherever
+  its snippet is placed, and `go-live` hands over the snippet and channel steps instead of blocking.
+
 ## 0.2.0 — unreleased
 
 - Customer workspace creation using backend capabilities and tenant-scoped tokens.

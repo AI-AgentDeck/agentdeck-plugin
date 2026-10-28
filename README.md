@@ -123,8 +123,9 @@ from the backend at runtime. Updates replace a complete bundle, removing omitted
 
 ## Current boundaries
 
-- PREPARING becomes TEST when initial knowledge/key setup is ready. TEST is not a quality verdict.
-- Today's MCP tools cannot add domains or set TEST → LIVE. `go-live` produces a blocked admin handover.
+- PREPARING becomes READY when initial knowledge/key setup is ready. READY is not a quality verdict.
+- A READY agent answers wherever its snippet is placed, on any number of the customer's websites, and in
+  the client hub's test chat. `go-live` checks acceptance and hands over the snippet and channel steps.
 - Discovery returns short excerpts. Material facts need full approved sources. Creation re-fetches
   configured URLs; it does not accept a discovery crawl ID.
 - Files upload after creation. Their individual indexing state is not reliably exposed by

@@ -1,25 +1,19 @@
 ---
 name: go-live
-description: Check an AgentDeck preview's acceptance evidence and prepare its domain, widget and channel publishing handover.
+description: Check an AgentDeck agent's acceptance evidence and hand over its widget snippet and channel steps.
 ---
 
-Use the user’s request as the agent ID and approved publishing domain.
+Use the user’s request as the agent ID and the websites it should appear on.
 Read [connection](../../references/connection.md) and [publishing](../../references/publishing.md).
 
 Call `whoami`, `get_agent` and `get_agent_status` for the requested agent. Verify the environment,
-scope, approved customer domain and current version. Read the acceptance report and match its
-version and sources to the agent; unresolved blockers or incomplete tests stop the handover.
+scope, `stage=READY` and current version. Read the acceptance report and match its version and
+sources to the agent; unresolved blockers or incomplete tests stop the handover.
 
-Inspect the tools the server actually exposes. The current contract has no supported MCP tool
-that adds customer domains or transitions an agent from TEST to LIVE. When those operations are
-absent, report `BLOCKED: publishing operation unavailable` and produce a precise admin handover:
-agent UUID, environment, reviewed version, approved domain, widget snippet if previously returned,
-requested channels and acceptance evidence. Refer the operator to supported platform controls or
-a backend change. Do not invent a publish endpoint, edit the database, bypass origin checks or
-treat Lifecycle.ACTIVE as AgentStage.LIVE.
-
-If a future server exposes publishing, read its schema and requirements, show what will become
-public and apply only the user's explicit publishing authorization for this agent, domain and
-environment. Verify the resulting LIVE state and perform a separately authorized public smoke test.
+A READY agent needs no activation: it answers wherever its snippet is placed. Hand over the widget
+snippet, the websites it goes on, requested channels with the client hub flows that connect them,
+and the acceptance evidence. Do not invent a publish endpoint or edit the database. Place a snippet
+on a public site only with the user's explicit authorization, and keep any public smoke test
+separately authorized.
 Channel setup is separate: credentials and accounts belong in the console's connection flows.
 Never use real notifications, CRM writes, bookings or phone calls as an incidental test.

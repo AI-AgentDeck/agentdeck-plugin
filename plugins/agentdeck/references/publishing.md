@@ -1,20 +1,18 @@
-# Publishing is a separate operation
+# Publishing
 
-Preview creation does not publish a business agent. A preview can be reviewed from the widget's
-standalone host while customer domains and external channels remain disconnected. The current
-MCP tools can inspect readiness and configuration but cannot add domains or set AgentStage.LIVE.
+A READY agent has no further switch to flip: it answers wherever its snippet is placed, and the
+customer may place it on several websites. Conversations started from the client hub's test chat,
+the preview link or `test_agent` are test chats and trigger no alerts, CRM writes or bookings;
+conversations anywhere else are real.
 
-Prepare a handover with:
+Publishing is therefore a handover, not an API call. Prepare it with:
 
 - Agent UUID, environment, reviewed version and portable bundle path.
-- Preview URL and the server-returned widget snippet when available.
-- Approved domain and any path/language requirements supplied by the user.
+- The server-returned widget snippet, and the websites the user wants it on.
 - Acceptance report and unresolved business or integration questions.
-- Channels requested and the connections still needed in supported console flows.
-- Explicit publishing blocker if the server lacks a supported activation operation.
+- Channels requested (WhatsApp, Instagram, Messenger, phone) and the client hub flows that connect them.
 
-Do not replace a missing publishing API with SQL, a guessed HTTP route, lifecycle activation or
-relaxed origin checks. A future publishing operation must be discovered from the actual server
-and requires the user's authorization for that agent, environment and domain. Keep real-channel
-smoke tests separate from isolated previews and disclose any real calls or notifications before
-performing them. Plans, payment and customer self-service belong to later product phases.
+Placing the snippet on a public site and connecting channels make the agent reach real people: do it
+only with the user's explicit authorization for that agent, environment and site. Keep real-channel
+smoke tests separate from test chats and disclose any real calls or notifications before performing
+them. Plans, payment and customer self-service belong to later product phases.

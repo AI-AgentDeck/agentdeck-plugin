@@ -35,10 +35,11 @@ allowance or a repeated operational error. Return the existing job/agent ID so t
 resume; never create a second agent because indexing is slow. If no wait tool is available,
 perform a few status reads and report pending rather than spinning.
 
-An agent is ready for testing when `stage=TEST`, `crawled=true`, refresh is absent or DONE, and
+An agent is ready for testing when `stage=READY`, `crawled=true`, refresh is absent or DONE, and
 `keyReady` is true or null. Null means dedicated-key provisioning is not enabled in that environment.
-PREPARING blocks testing. LIVE is a separate publishing state. A later refresh of a TEST/LIVE
-agent can still be pending or failed; inspect it before grading.
+PREPARING blocks testing. There is no separate live stage: a READY agent answers wherever it is placed,
+unless it or its widget is switched off. A later refresh of a READY agent can still be pending or
+failed; inspect it before grading.
 
 ## Applying configuration
 
