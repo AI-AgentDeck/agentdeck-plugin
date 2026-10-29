@@ -13,9 +13,8 @@
     "mcp_url": {
       "type": "string",
       "title": "AgentDeck environment",
-      "description": "Use the environment that issued your token. Team evaluation starts on dev.",
+      "description": "Use the environment that issued your token: https://dev-api.agentdeck.eu/mcp (dev), https://api.agentdeck.eu/mcp (production) or http://localhost:8080/mcp (local). Team evaluation starts on dev.",
       "default": "https://dev-api.agentdeck.eu/mcp",
-      "options": ["https://dev-api.agentdeck.eu/mcp", "https://api.agentdeck.eu/mcp", "http://localhost:8080/mcp"],
       "required": true
     },
     "token": {
