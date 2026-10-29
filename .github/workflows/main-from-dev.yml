@@ -1,0 +1,28 @@
+# main only takes pull requests from dev: everything reaches production through dev first.
+# Required by the "main: pull requests from dev only" ruleset (check name below). Org admins can
+# bypass it on a pull request in an emergency.
+name: main from dev
+
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, reopened, synchronize, edited]
+
+permissions: {}
+
+jobs:
+  check:
+    name: main only from dev
+    runs-on: ubuntu-latest
+    steps:
+      - name: Pull request comes from dev
+        env:
+          HEAD: ${{ github.head_ref }}
+          SAME_REPO: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
+        run: |
+          if [ "$HEAD" = dev ] && [ "$SAME_REPO" = true ]; then
+            echo "From dev: ok"
+          else
+            echo "::error::Pull requests into main come from dev only (this one comes from '$HEAD'). Merge into dev first, then open dev → main."
+            exit 1
+          fi
