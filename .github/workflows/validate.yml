@@ -1,0 +1,33 @@
+name: validate
+
+on:
+  push:
+    branches: [dev]
+  pull_request:
+    branches: [dev, main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: npm install --global @anthropic-ai/claude-code@2.1.310
+      - run: npm install --global @openai/codex@0.164.0
+      - run: python3 scripts/check.py
+      - run: python3 scripts/check_codex.py
+      - run: python3 -m unittest discover -s tests -v
+      - name: Check release version
+        if: github.event_name == 'pull_request' && github.base_ref == 'main'
+        run: python3 scripts/check_release.py --base origin/main

@@ -1,0 +1,59 @@
+name: live-acceptance
+
+# Manual only: it drives real Claude Code sessions against dev and spends up to the cost cap below.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: agentdeck-live-dev
+  cancel-in-progress: false
+
+jobs:
+  live-acceptance:
+    runs-on: ubuntu-latest
+    timeout-minutes: 110
+    environment: dev-evaluations
+    steps:
+      - name: Run from dev only
+        env:
+          REF: ${{ github.ref_name }}
+        run: test "$REF" = dev || { echo 'Manual live acceptance runs only from dev.'; exit 1; }
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: npm install --global @anthropic-ai/claude-code@2.1.310
+      - run: python3 scripts/check.py
+      - run: python3 scripts/check_release.py --base origin/main
+      - name: Install and configure the local dev package
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          AGENTDECK_EVAL_TOKEN: ${{ secrets.AGENTDECK_EVAL_TOKEN }}
+        run: |
+          test -n "$ANTHROPIC_API_KEY" && test -n "$AGENTDECK_EVAL_TOKEN" || { echo 'Set ANTHROPIC_API_KEY and AGENTDECK_EVAL_TOKEN in dev-evaluations. Live acceptance has not run.'; exit 1; }
+          claude plugin marketplace add .
+          claude plugin install agentdeck@agentdeck
+          python3 scripts/configure_plugin.py --environment dev --token-env AGENTDECK_EVAL_TOKEN
+      - name: Evaluate five real businesses on dev
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: >-
+          claude plugin eval agentdeck@agentdeck --eval-dir evals-live --mocks off
+          --runs 1 --ablation none --trust-plugin --no-publish --max-cost-usd 20
+          --model sonnet --judge-model haiku --output-dir reports/live
+          --json reports/live/result.json
+          --allow-tools Write Edit "Bash(python3 *)"
+          "WebFetch(domain:dentalangels.hu)"
+          "WebFetch(domain:ar-kfz-technik.e-m-ritter.chatgpt.site)"
+          "WebFetch(domain:padelclub-plattling.de)" "WebFetch(domain:www.padelclub-plattling.de)"
+          "WebFetch(domain:norinohi.com)" "WebFetch(domain:www.norinohi.com)"
+          "WebFetch(domain:schmidt-export.com)" "WebFetch(domain:www.schmidt-export.com)"
+          "mcp__plugin_agentdeck_agentdeck__*"

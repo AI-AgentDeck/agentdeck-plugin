@@ -1,0 +1,12 @@
+.DS_Store
+.idea/
+__pycache__/
+*.py[cod]
+.venv/
+.env
+.env.*
+/agentdeck/
+.agentdeck-work/
+**/evals/results/
+**/evals-live/results/
+reports/

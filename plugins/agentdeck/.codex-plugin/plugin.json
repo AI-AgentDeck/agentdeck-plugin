@@ -1,0 +1,22 @@
+{
+  "name": "agentdeck",
+  "version": "0.4.0",
+  "description": "Create, refine and test AgentDeck business agents from approved sources.",
+  "author": {
+    "name": "AI-AgentDeck"
+  },
+  "skills": "./skills/",
+  "mcpServers": "./.codex.mcp.json",
+  "interface": {
+    "displayName": "AgentDeck",
+    "shortDescription": "Build and test business agents",
+    "developerName": "AI-AgentDeck",
+    "category": "Productivity",
+    "capabilities": [
+      "Read",
+      "Write"
+    ],
+    "websiteURL": "https://agentdeck.eu",
+    "privacyPolicyURL": "https://agentdeck.eu/privacy/"
+  }
+}
