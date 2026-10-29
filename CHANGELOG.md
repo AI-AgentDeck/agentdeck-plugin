@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.4.1
+
+- Repository rules: `main` takes pull requests from `dev` only (`main only from dev` check).
+
 ## 0.4.0 — unreleased
 
 - Agents are PREPARING, then READY; the TEST and LIVE stages are gone. A READY agent answers wherever
