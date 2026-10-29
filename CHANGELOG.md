@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 0.4.2
 
 - The environment setting no longer carries an `options` list, which Claude Code 2.1.251 refuses at
   install (`userConfig.mcp_url: Unrecognized key: "options"`). Its description names the three URLs.
