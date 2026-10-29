@@ -177,9 +177,9 @@ dev backend, an AgentDeck token and actual conversations.
 ## Releases
 
 `dev` is the team branch; `main` is the release branch. Main pull requests come from dev, pass
-validation and live acceptance on dev, and increase the version after the first release. Keep
-Claude and Codex manifest versions and MCP headers equal. Reports stay private. Configure branch
-protection to require the validation and live-acceptance checks; CI alone cannot prevent bypass.
+validation, and increase the version after the first release. Live acceptance on dev is a manual
+run (Actions → live-acceptance) when a release needs it. Keep Claude and Codex manifest versions
+and MCP headers equal. Reports stay private. Branch protection requires the validation check.
 Make `main` the repository's default branch when promoting the first stable release.
 
 Backend: <https://github.com/AI-AgentDeck/agent-backend>. Privacy:

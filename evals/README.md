@@ -51,11 +51,10 @@ cross-environment equivalence. Go-live is a handover of the snippet and channel 
 
 ## CI and release gate
 
-Offline validation and helper tests run without credentials. Main pull requests must come from dev
-and run live acceptance against dev. The credentialed workflow requires an `ANTHROPIC_API_KEY` and
-an `AGENTDECK_EVAL_TOKEN` in the protected GitHub environment `dev-evaluations`. These are separate
-credentials: Claude generation versus AgentDeck administration. Configure environment access and
-require the `validate` and `live-acceptance` checks on main. Fork code never receives these secrets.
+Offline validation and helper tests run without credentials, and `validate` is the check main
+requires. Live acceptance against dev is started by hand from dev (Actions → live-acceptance). It
+needs an `ANTHROPIC_API_KEY` and an `AGENTDECK_EVAL_TOKEN` in the protected GitHub environment
+`dev-evaluations`; until those exist it stops at its first step without running anything.
 
 The workflow refuses missing secrets instead of treating a skipped evaluation as success. It does
 not publish reports or automatically merge a release. CI reports remain on its ephemeral runner;
