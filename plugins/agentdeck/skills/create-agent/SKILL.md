@@ -42,8 +42,8 @@ Read [connection and authorization](../../references/connection.md) first. Use t
    matches `whoami`; stop and report a mismatch. The present create tool does not
    accept a crawl ID or file bytes: discovered URLs go into the bundle; uploads require the new
    agent ID. Follow the backend contract for file ingestion and indexing verification.
-7. Poll `get_agent_status` until `TEST`, `crawled=true`, no failed or unfinished refresh, and the key
-   is ready where reported. Follow the bounded polling rules. `TEST` is infrastructure readiness,
+7. Poll `get_agent_status` until `READY`, `crawled=true`, no failed or unfinished refresh, and the key
+   is ready where reported. Follow the bounded polling rules. `READY` is infrastructure readiness,
    not a quality verdict. Run [the acceptance checklist](../../references/evaluation.md) on fresh
    test threads, invoke the independent judge using the runtime guide with the source evidence and transcripts, and make
    at most two correction rounds through `get_agent` → validate → `update_agent`. Wait for each
@@ -53,7 +53,7 @@ Read [connection and authorization](../../references/connection.md) first. Use t
    the final id-free configuration to `./agentdeck/<slug>.json` (`--replace` for the candidate prepared by this same run). Report the agent ID, environment,
    version, preview link, widget snippet when returned, test verdicts with evidence and remaining
    gaps. Write the report to `.agentdeck-work/<slug>/report.md`. Distinguish ready for review from
-   blocked or failed acceptance. Publishing is handled by the `go-live` skill.
+   blocked or failed acceptance. Placing it on websites is handled by the `go-live` skill.
 
 The helper is the bundled `scripts/bundle.py` (resolve its path using the runtime guide); run `--help` for its arguments. It performs
 local persistence checks; `validate_agent` remains the configuration validator. When local file

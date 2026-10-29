@@ -7,7 +7,7 @@ uses AgentDeck's embedding/chat budget. Cost estimates from Claude do not includ
 ## Mock orchestration
 
 `plugins/agentdeck/evals/` substitutes the MCP server. Its cases cover authentication, environment
-selection, preparing/publishing blockers and complete creation flows for five synthetic industries.
+selection, preparing blockers, the publishing handover and complete creation flows for five synthetic industries.
 The mock server is deliberately reduced; it does not implement real schema validation or real
 agent reasoning. Its conversations cannot establish factual quality of a deployed business agent.
 
@@ -47,7 +47,7 @@ daily create limits. Reuse the private creation state/IDs when resuming an inter
 
 Upload files are additional promotion artifacts; bundle-only equality does not cover uploaded
 binaries or environment connections. Review a second-environment import separately before claiming
-cross-environment equivalence. Go-live is blocked until the backend exposes a supported operation.
+cross-environment equivalence. Go-live is a handover of the snippet and channel steps; there is no activation operation.
 
 ## CI and release gate
 
