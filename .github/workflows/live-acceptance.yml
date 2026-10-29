@@ -1,9 +1,7 @@
 name: live-acceptance
 
+# Manual only: it drives real Claude Code sessions against dev and spends up to the cost cap below.
 on:
-  pull_request:
-    branches: [main]
-    types: [opened, synchronize, reopened, ready_for_review]
   workflow_dispatch:
 
 permissions:
@@ -19,19 +17,10 @@ jobs:
     timeout-minutes: 110
     environment: dev-evaluations
     steps:
-      - name: Require trusted dev promotion
+      - name: Run from dev only
         env:
-          EVENT: ${{ github.event_name }}
-          HEAD_BRANCH: ${{ github.head_ref }}
-          HEAD_REPO: ${{ github.event.pull_request.head.repo.full_name }}
-          REPOSITORY: ${{ github.repository }}
           REF: ${{ github.ref_name }}
-        run: |
-          if [ "$EVENT" = pull_request ]; then
-            test "$HEAD_REPO" = "$REPOSITORY" && test "$HEAD_BRANCH" = dev || { echo 'Release acceptance requires a dev pull request from this repository.'; exit 1; }
-          else
-            test "$REF" = dev || { echo 'Manual live acceptance runs only from dev.'; exit 1; }
-          fi
+        run: test "$REF" = dev || { echo 'Manual live acceptance runs only from dev.'; exit 1; }
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0

@@ -4,6 +4,7 @@
 
 - Agents are PREPARING, then READY; the TEST and LIVE stages are gone. A READY agent answers wherever
   its snippet is placed, and `go-live` hands over the snippet and channel steps instead of blocking.
+- Live acceptance is a manual workflow; release pull requests require only `validate`.
 
 ## 0.2.0 — unreleased
 
