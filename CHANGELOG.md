@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.5.1
+
+- Connects to production (`https://api.agentdeck.eu/mcp`) by default, in Claude Code and Codex; the
+  Codex launcher defaults to `prod`. Choose dev with `/plugin configure agentdeck@agentdeck` or
+  `--environment dev`.
+
 ## 0.5.0
 
 - Claude Code connects by signing in instead of a pasted token. The `token` option and the static

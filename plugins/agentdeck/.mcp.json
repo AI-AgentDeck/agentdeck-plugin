@@ -4,7 +4,7 @@
       "type": "http",
       "url": "${user_config.mcp_url}",
       "headers": {
-        "X-Agentdeck-Plugin-Version": "0.5.0"
+        "X-Agentdeck-Plugin-Version": "0.5.1"
       }
     }
   }
