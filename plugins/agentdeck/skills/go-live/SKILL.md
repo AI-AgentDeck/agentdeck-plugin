@@ -3,20 +3,16 @@ name: go-live
 description: Check an AgentDeck agent's acceptance evidence and hand over its widget snippet and channel steps.
 ---
 
-Use the user’s request as the agent ID and the websites it should appear on.
-Read [connection](../../references/connection.md) and [publishing](../../references/publishing.md).
+Use the user’s request as the agent ID and the websites it should appear on. The AgentDeck server's
+guide says what a handover contains; this skill adds where the local evidence is. Read
+[connection](../../references/connection.md).
 
-Call `whoami`, `get_agent` and `get_agent_status` for the requested agent. Verify the environment,
-scope, `stage=READY` and current version. Read the acceptance report and match its version and
-sources to the agent; unresolved blockers or incomplete tests stop the handover.
-
-A READY agent needs no activation: it answers wherever its snippet is placed. The snippet is the
-`widgetSnippet` a `create_agent` or `update_agent` result returned (in the creation report), or the
-one the client hub shows under the agent's Integrations; never assemble one from a guessed key. If a
-site refuses the widget, the environment checks declared domains and an operator must add it. Hand
-over the snippet, the websites it goes on, requested channels with the client hub flows that connect them,
-and the acceptance evidence. Do not invent a publish endpoint or edit the database. Place a snippet
-on a public site only with the user's explicit authorization, and keep any public smoke test
-separately authorized.
-Channel setup is separate: credentials and accounts belong in the console's connection flows.
-Never use real notifications, CRM writes, bookings or phone calls as an incidental test.
+1. Call `whoami` and check it as the connection guide says. A missing `guideVersion` means the
+   server is older than this plugin: tell the user the AgentDeck server needs updating and stop.
+2. Call `get_guide(topic="go-live")` and follow it, with `get_guide(topic="overview")` and
+   `get_guide(topic="server-rules")` when it refers to them. Do not fill a missing topic from
+   memory — report it.
+3. The acceptance evidence is the report under `.agentdeck-work/<slug>/report.md` and the portable
+   bundle under `./agentdeck/`. A missing or mismatched report is a gap to name, not a pass.
+4. Place a snippet on a public site, connect a channel or run a real-channel smoke test only with
+   the user's explicit authorization for that agent, environment and site.

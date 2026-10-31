@@ -1,34 +1,52 @@
 # Establish the caller and environment
 
-Read [the runtime guide](runtime.md) for setup, tool discovery and paths.
-The installed MCP server is `agentdeck`. The connection supplies the token and plugin-version header;
-never ask the user to paste credentials into a conversation, use Bash to print stored options,
-or put a token in a bundle, report, URL or source ledger. Do not inspect credential environment variables.
+Read [the runtime guide](runtime.md) for tool names, paths and the judge.
 
-Call `whoami` before other operations. Match its `environment` with the selected runtime endpoint:
-dev-api → dev, api.agentdeck.eu → prod, localhost → local. An unexpected or missing
-environment ends the run before writes. Explain which endpoint/profile differed and let the
-operator correct installation settings. Do not automatically switch endpoints or retry another
-environment with the same credential. Production creation or publishing needs an instruction
-that explicitly targets production; a configured production URL alone is not that instruction.
+## Which server
 
-Record the returned scope, supported models/languages, plugin compatibility and remaining caps.
-ADMIN can create new businesses. TENANT can create and manage agents only in its own workspace,
-when `whoami.capabilities.createAgent` is true. A missing or false capability requires the backend's
-customer-plugin feature to be enabled and a compatible plugin. Read operations succeeding does not grant creation rights. On `plugin_outdated`,
-`plugin_version_missing` or `plugin_version_unreadable`, follow the returned update instructions
-and stop before writes. A missing or unreadable header can also mean a proxy is stripping it.
+Use the one AgentDeck MCP server this session has: in Claude Code the plugin's `agentdeck` server
+(tools `mcp__plugin_agentdeck_agentdeck__*`) or one the user added with `claude mcp add`
+(`mcp__agentdeck__*`); in Codex the `agentdeck` server. If two AgentDeck servers are connected, stop
+and ask the user to keep one — two connections can point at different environments.
 
-For 401 or no connection, direct customers to Settings → Connect Claude Code in their environment's
-AgentDeck console, where they create their own workspace-scoped token. Internal operators can use
-the repository's admin token helper. Use the runtime guide to configure the connection;
-never ask customers to obtain an admin login or copy a console session token. A 404 can mean
-the backend feature is disabled or this branch has not been deployed. A 503 is an operational
-failure, not proof that the token should be replaced. A 429 or `cap_reached` ends costly work;
-show the reset/remaining allowance instead of creating another token or looping.
+Never ask the user to paste a credential into the conversation, print stored options or credential
+environment variables, or put a token in a bundle, report, URL or source ledger.
 
-After identity checks, read `get_spec` and the actual MCP tool input schemas. The backend is the
-authority for keys, defaults, models, enabled tools and validation. Do not maintain a copied
-schema or silently substitute a requested model. Describe a capability gap when a required
-tool is absent. Reuse the current session's authorization for its stated goal and environment;
-ask only for missing business facts or unresolved action scope.
+## Check `whoami`
+
+Call `whoami` before anything else.
+
+- `guideVersion` missing: the server predates the guide this plugin relies on. Tell the user the
+  AgentDeck server needs updating and stop; do not work from remembered guidance.
+- `environment` must match the endpoint: dev-api → dev, api.agentdeck.eu → prod, localhost → local.
+  A mismatch or a missing value ends the run before any write. Say which endpoint differed and let
+  the user correct the setting; do not switch endpoints or retry another environment yourself.
+  Production creation or publishing needs an instruction that explicitly targets production; a
+  configured production URL alone is not that instruction.
+- Scope: ADMIN creates new businesses. TENANT creates and manages agents only in its own workspace,
+  and only when `capabilities.createAgent` is true; otherwise creation stops with that reason.
+- `plugin_outdated`, `plugin_version_missing` or `plugin_version_unreadable`: follow the returned
+  update instructions and stop before writes. A missing header can also mean a proxy strips it.
+- Record the caps. A 429 or `cap_reached` ends costly work; show the reset instead of looping.
+
+Then follow the server's guide (`get_guide`), its `get_spec` and the tool schemas. The server is
+the authority for keys, models, enabled tools and validation; describe a capability gap when a
+required tool is absent.
+
+## Not connected or not signed in
+
+In Claude Code the plugin connects by signing in; there is no token to configure. When tools are
+missing, a call answers 401, or `/mcp` shows the server as needing authentication, tell the user:
+
+1. Run `/mcp`, choose `agentdeck`, then **Authenticate**.
+2. In the browser, sign in to the AgentDeck console of that environment and choose **Allow**.
+3. Return to Claude Code; the tools appear without a restart.
+
+The environment is the plugin option `/plugin configure agentdeck@agentdeck` (dev by default).
+
+In Codex, the connection uses a workspace token from AgentDeck Settings, supplied through the
+repository's launcher (see the runtime guide). Never ask a customer for an admin login or a
+console session token.
+
+A 404 can mean the backend feature is disabled or not deployed. A 503 is an operational failure,
+not a reason to sign in again.

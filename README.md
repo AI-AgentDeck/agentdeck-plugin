@@ -4,6 +4,11 @@ Turn a business website, approved documents or a brief into an AgentDeck agent w
 prompts, indexed knowledge and a tested preview. Setup reasoning runs in your Claude Code or Codex session;
 AgentDeck's authenticated MCP tools handle crawling, validation and execution.
 
+The plugin is thin. The workflow guidance — how to create, write prompts, test, update and go live —
+is served by the AgentDeck server (`get_guide`), so every app connected to it gets the same rules.
+The plugin adds the local bundle helper and files, an independent conversation judge and the
+connection.
+
 This is the **team preview on `dev`**. Production acceptance is not complete. The first release
 will be promoted to `main` after live evaluation. One repository packages both runtimes with shared
 skills and separate MCP configuration.
@@ -11,8 +16,8 @@ skills and separate MCP configuration.
 ## Customer setup
 
 Use an AgentDeck account and Python **3.11 or newer** for local bundle helpers.
-Choose the runtime you use below. Tokens from the existing **Connect Claude Code** settings page
-work with either runtime; that page currently shows Claude installation instructions.
+Choose the runtime you use below. Claude Code connects by signing in; Codex uses a workspace token
+from the **Connect Claude Code** settings page.
 
 Customer connection is available only in environments where customer access has been enabled.
 Production customer access is not enabled yet; use the dev console for this preview.
@@ -21,20 +26,24 @@ Production customer access is not enabled yet; use the dev console for this prev
 
 Use Claude Code **2.1.310 or newer**.
 
-1. Sign in to AgentDeck and open **Settings → Connect Claude Code**.
-2. Create a named token for your business workspace.
-3. Follow the plugin installation commands shown on that page.
-4. Inside Claude Code, open the configuration dialog:
+1. Install the plugin (each command separately):
 
    ```text
-   /plugin configure agentdeck@agentdeck
+   /plugin marketplace add AI-AgentDeck/agentdeck-plugin#dev
+   /plugin install agentdeck@agentdeck
    ```
 
-5. Select the matching environment and paste your token into its masked field. Restart Claude Code.
+2. The plugin connects to dev by default. For another environment, run
+   `/plugin configure agentdeck@agentdeck` and pick its URL.
+3. Run `/mcp`, choose `agentdeck`, then **Authenticate**. Sign in to the AgentDeck console in the
+   browser and choose **Allow**. Do this once per environment; Claude Code keeps the sign-in.
 
-Your token lets the plugin create and manage agents inside your business workspace. Workspace and
-daily usage limits apply across its tokens. You can revoke a token from the same connection page.
+The sign-in lets the plugin create and manage agents inside your business workspace. Workspace and
+daily usage limits apply. You can disconnect it again in the AgentDeck console.
 Never paste tokens into normal chats or git.
+
+In Claude Code use **either** this plugin **or** `claude mcp add` for AgentDeck — not both, or the
+session has two AgentDeck servers.
 
 ### Codex CLI
 
@@ -51,7 +60,7 @@ codex plugin marketplace add AI-AgentDeck/agentdeck-plugin --ref dev
 codex plugin add agentdeck@agentdeck
 ```
 
-Create a workspace token in AgentDeck **Settings → Connect Claude Code**. To start a session with
+Codex connects with a token. Create a workspace token in AgentDeck **Settings → Connect Claude Code**. To start a session with
 an explicit environment and a hidden token prompt, obtain the launcher from this repository:
 
 ```sh
@@ -111,10 +120,11 @@ Claude Code commands (run each separately):
 /agentdeck:go-live <agent-uuid> https://customer.example
 ```
 
-Creation follows eight stages: identify caller, discover sources, ask missing questions, write the
-bundle, validate, create and index, test and refine, then hand over. Business facts stay in knowledge;
-prompts define behavior. A read-only judge reviews sources and conversations independently. At most
-two correction rounds run; unresolved questions remain explicit instead of becoming guesses.
+Each skill calls `whoami` and then the server's guide for its job, and follows it. Business facts
+stay in knowledge; prompts define behavior. On top of the guide's evaluation checklist, a read-only
+judge reviews sources and conversations independently. Unresolved questions remain explicit instead
+of becoming guesses. A server without `guideVersion` in `whoami` is too old for this plugin; the
+skills say so and stop.
 
 The portable configuration is saved to `./agentdeck/<slug>.json`. Private source ledgers, creation
 keys and reports stay in `.agentdeck-work/<slug>/`. Keep these out of your own project's git history
@@ -146,9 +156,8 @@ The team preview is installed from `dev`:
 /plugin install agentdeck@agentdeck
 ```
 
-For AgentDeck staff and developers who need admin access, follow
-[Internal setup: create an admin token](docs/internal-setup.md). That guide covers the admin API,
-the hidden-prompt mint helper and secure configuration for team testing.
+AgentDeck staff sign in the same way. For Codex or a headless evaluation, follow
+[Internal setup: create an admin token](docs/internal-setup.md).
 
 ```sh
 python3 scripts/check.py
@@ -161,18 +170,18 @@ claude --plugin-dir ./plugins/agentdeck
 installation, shared skill discovery, bearer/version headers and endpoint selection without model
 calls. This is a packaging/connection smoke check, not live business acceptance.
 
-A local `--plugin-dir` session has its own identity/options. The configuration helper targets the
-marketplace-installed `agentdeck@agentdeck` package. Configure local options inside that session.
+A local `--plugin-dir` session has its own options and sign-in. Configure and authenticate inside it.
 
 Run a scoped mocked evaluation (real Claude usage, substituted MCP tools):
 
 ```sh
-claude plugin eval ./plugins/agentdeck --case missing-token --runs 1 --ablation none --trust-plugin --no-publish --max-cost-usd 2
+claude plugin eval ./plugins/agentdeck --case signed-out --runs 1 --ablation none --trust-plugin --no-publish --max-cost-usd 2
 ```
 
 See [the evaluation guide](evals/README.md) for full mock and five-industry live runs, tool grants,
 reports and CI secrets. Mock success proves orchestration only; real acceptance needs a deployed
-dev backend, an AgentDeck token and actual conversations.
+dev backend, an AgentDeck token (an evaluation cannot sign in through a browser) and actual
+conversations.
 
 ## Releases
 

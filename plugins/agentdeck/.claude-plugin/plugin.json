@@ -1,7 +1,7 @@
 {
   "name": "agentdeck",
   "displayName": "AgentDeck",
-  "version": "0.4.2",
+  "version": "0.5.0",
   "description": "Create, refine and test business agents using AgentDeck's MCP tools. Return a preview, portable bundle and evidence-based quality report.",
   "author": { "name": "AI-AgentDeck", "url": "https://github.com/AI-AgentDeck" },
   "repository": "https://github.com/AI-AgentDeck/agentdeck-plugin",
@@ -13,15 +13,8 @@
     "mcp_url": {
       "type": "string",
       "title": "AgentDeck environment",
-      "description": "Use the environment that issued your token: https://dev-api.agentdeck.eu/mcp (dev), https://api.agentdeck.eu/mcp (production) or http://localhost:8080/mcp (local). Team evaluation starts on dev.",
+      "description": "The environment to sign in to: https://dev-api.agentdeck.eu/mcp (dev), https://api.agentdeck.eu/mcp (production) or http://localhost:8080/mcp (local). After changing it, run /mcp → agentdeck → Authenticate. Team evaluation starts on dev.",
       "default": "https://dev-api.agentdeck.eu/mcp",
-      "required": true
-    },
-    "token": {
-      "type": "string",
-      "title": "AgentDeck API token",
-      "description": "Your workspace token from AgentDeck Settings → Connect Claude Code, or an internal admin token from the same environment.",
-      "sensitive": true,
       "required": true
     }
   }

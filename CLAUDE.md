@@ -2,7 +2,10 @@
 
 This repository packages shared skills for Claude Code and Codex, with runtime-specific MCP connections. The backend owns tool schemas,
 authorization, configuration validation and execution. Read its live `get_spec` and tools/list;
-never copy its production schema into the plugin or guess an unavailable operation.
+never copy its production schema into the plugin or guess an unavailable operation. The backend
+also serves the shared workflow guidance (`get_guide`); skills keep only what is specific to a
+runtime — the connection, local files, `bundle.py` and the independent judge. Claude Code connects
+by signing in, so the shipped `.mcp.json` carries no Authorization header.
 
 The marketplace and plugin are both named `agentdeck`. The repository is `agentdeck-plugin`.
 Keep all runtime manifest versions and MCP version headers equal. `dev` is the team
