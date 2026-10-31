@@ -9,7 +9,7 @@ and hands you a preview link and the snippet for your site.
 **Claude Code** — install, then sign in with `/mcp` → **agentdeck** → **Authenticate** → **Allow**:
 
 ```text
-/plugin marketplace add AI-AgentDeck/agentdeck-plugin#dev
+/plugin marketplace add AI-AgentDeck/agentdeck-plugin
 /plugin install agentdeck@agentdeck
 /agentdeck:create-agent https://your-business.com
 ```
@@ -17,7 +17,7 @@ and hands you a preview link and the snippet for your site.
 **Codex CLI** — install, sign in, then use `$agentdeck:create-agent` in a new session:
 
 ```sh
-codex plugin marketplace add AI-AgentDeck/agentdeck-plugin --ref dev
+codex plugin marketplace add AI-AgentDeck/agentdeck-plugin
 codex plugin add agentdeck@agentdeck
 codex mcp login agentdeck
 ```
@@ -25,7 +25,10 @@ codex mcp login agentdeck
 The other commands are `test-agent`, `update-agent` and `go-live`. No token is needed: you sign in with
 your AgentDeck account. This preview connects to the dev environment.
 
+In the Claude desktop app: **Add marketplace** → `AI-AgentDeck/agentdeck-plugin` → **Sync** → install
+**AgentDeck**.
+
 Full guide, Claude and ChatGPT connectors and troubleshooting:
-[repository README](https://github.com/AI-AgentDeck/agentdeck-plugin/tree/dev#readme).
+[repository README](https://github.com/AI-AgentDeck/agentdeck-plugin#readme).
 [Website](https://agentdeck.eu) · [Client hub](https://client-hub.agentdeck.eu) ·
 [Privacy](https://client-hub.agentdeck.eu/privacy-policy) · MIT license.

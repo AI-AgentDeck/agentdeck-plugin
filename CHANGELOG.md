@@ -15,6 +15,8 @@
   `backend-contract.md` and `publishing.md`, and `scripts/configure_plugin.py`.
 - Live acceptance runs on a copy made by `scripts/prepare_eval_plugin.py`, whose header reads
   `EVAL_AGENTDECK_TOKEN`; an evaluation cannot sign in through a browser.
+- Installing needs only the repository name, `AI-AgentDeck/agentdeck-plugin`, in Claude Code, the
+  Claude desktop app ("Add marketplace") and Codex; it installs from `main`.
 - Codex connects by signing in too: run `codex mcp login agentdeck` once (or the launcher with
   `--login`). The packaged connection no longer reads `AGENTDECK_TOKEN`; the launcher's
   `--token-file` and `--token-env` remain for scripts, and its hidden token prompt is gone.
