@@ -1,7 +1,7 @@
 {
   "name": "agentdeck",
   "displayName": "AgentDeck",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "Create, refine and test business agents using AgentDeck's MCP tools. Return a preview, portable bundle and evidence-based quality report.",
   "author": {
     "name": "AI-AgentDeck",
@@ -21,8 +21,8 @@
     "mcp_url": {
       "type": "string",
       "title": "AgentDeck environment",
-      "description": "The environment to sign in to: https://dev-api.agentdeck.eu/mcp (dev), https://api.agentdeck.eu/mcp (production) or http://localhost:8080/mcp (local). After changing it, run /mcp → agentdeck → Authenticate. Team evaluation starts on dev.",
-      "default": "https://dev-api.agentdeck.eu/mcp",
+      "description": "The environment to sign in to: https://dev-api.agentdeck.eu/mcp (dev), https://api.agentdeck.eu/mcp (production) or http://localhost:8080/mcp (local). After changing it, run /mcp → agentdeck → Authenticate.",
+      "default": "https://api.agentdeck.eu/mcp",
       "required": true
     }
   }

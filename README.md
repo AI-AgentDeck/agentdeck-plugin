@@ -23,8 +23,8 @@ questions — what the agent should achieve, which languages your customers writ
 take over — and builds an agent that answers only from your own material. It then test-chats the agent,
 checks the answers against your website and hands you a preview link and a one-line snippet for your site.
 
-> **Preview.** The plugin and the addresses below connect to the dev environment (`dev-api.agentdeck.eu`,
-> client hub `dev-client-hub.agentdeck.eu`). Production customer access is not switched on yet.
+> The plugin and the addresses below connect to production (`api.agentdeck.eu`, client hub
+> `client-hub.agentdeck.eu`). The team tries changes on dev; see [Developers](#developers).
 
 ## Pick your app
 
@@ -40,7 +40,7 @@ checks the answers against your website and hands you a preview link and a one-l
 [`AI-AgentDeck/agentdeck-plugin`](https://github.com/AI-AgentDeck/agentdeck-plugin) and install **AgentDeck**.
 
 Every app connects by **signing in with your AgentDeck account** and choosing **Allow**. You never copy an
-API key or a token. No account yet? [Create one in the client hub](https://client-hub.agentdeck.eu/sign-up).
+API key or a token. No account yet? Write to [info@agentdeck.eu](mailto:info@agentdeck.eu) and we set one up.
 
 The plugin adds what a connector cannot: ready-made commands, local copies of every agent, and an
 independent second check of each test conversation. The rules for building a good agent are served by
@@ -154,7 +154,7 @@ No install. Add it once on the web or in the desktop app.
 1. Copy the AgentDeck address:
 
    ```text
-   https://dev-api.agentdeck.eu/mcp
+   https://api.agentdeck.eu/mcp
    ```
 
 2. Open [Claude's connector window](https://claude.ai/new?modal=add-custom-connector#customize/connectors).
@@ -169,7 +169,7 @@ No install. Needs ChatGPT Plus, Pro or Business.
 
 1. Open [ChatGPT settings → Connectors](https://chatgpt.com/#settings/Connectors), open **Advanced settings**
    and turn on **Developer mode**.
-2. Copy the AgentDeck address: `https://dev-api.agentdeck.eu/mcp`
+2. Copy the AgentDeck address: `https://api.agentdeck.eu/mcp`
 3. Click **Create**, name it **AgentDeck**, paste the address and choose **OAuth** as the authentication.
 4. Sign in to AgentDeck in the window that opens and click **Allow**.
 
@@ -180,7 +180,7 @@ Then, in a new chat with AgentDeck turned on: *"Create an AgentDeck agent for ht
 If you only want the AgentDeck tools, without the commands:
 
 ```sh
-claude mcp add --transport http agentdeck https://dev-api.agentdeck.eu/mcp
+claude mcp add --transport http agentdeck https://api.agentdeck.eu/mcp
 ```
 
 Then type `/mcp` in Claude Code, choose **agentdeck** → **Authenticate**, and click **Allow** in the browser.

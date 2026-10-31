@@ -45,7 +45,7 @@ def launch(environment, token=None, arguments=(), login=False):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--environment", choices=ENDPOINTS, default="dev")
+    parser.add_argument("--environment", choices=ENDPOINTS, default="prod")
     parser.add_argument("--login", action="store_true", help="sign in through the browser before starting")
     source = parser.add_mutually_exclusive_group()
     source.add_argument("--token-file", type=Path, help="scripts: private JSON object containing a token field")
