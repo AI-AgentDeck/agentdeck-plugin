@@ -20,7 +20,7 @@ first and [the runtime guide](../../references/runtime.md) for paths, tools and 
    `get_guide(topic="overview")`, `get_guide(topic="prompt-design")`,
    `get_guide(topic="industry-patterns")`, `get_guide(topic="evaluation")` and
    `get_guide(topic="server-rules")`. The served guide is the authority; do not fill a missing
-   topic from memory — report it instead. Prefer a model from `whoami.recommendedModels`.
+   topic from memory — report it instead. `whoami.recommendedModels` is advice for the AI app the user chats in; the agent's own model comes only from `whoami.models`.
 3. Keep the source ledger and private run state under `.agentdeck-work/<slug>/`.
 4. After `validate_agent` passes and before the first `create_agent`, save the candidate locally and
    run the bundled `scripts/bundle.py prepare` with a descriptive slug and
