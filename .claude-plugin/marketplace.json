@@ -2,12 +2,12 @@
   "name": "agentdeck",
   "owner": { "name": "AI-AgentDeck", "url": "https://github.com/AI-AgentDeck" },
   "description": "Create and evaluate AgentDeck business agents from Claude Code and Codex.",
-  "version": "0.4.2",
+  "version": "0.5.0",
   "plugins": [
     {
       "name": "agentdeck",
       "source": "./plugins/agentdeck",
-      "version": "0.4.2",
+      "version": "0.5.0",
       "description": "Business sources to a tested AgentDeck preview, with portable configuration and an evidence report."
     }
   ]

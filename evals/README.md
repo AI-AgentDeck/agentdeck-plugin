@@ -27,21 +27,25 @@ schema validation is not a substitute.
 
 ## Live acceptance on dev
 
-`plugins/agentdeck/evals-live/` uses the installed, configured plugin and real MCP tools. Sites are
+`plugins/agentdeck/evals-live/` uses real MCP tools. Sites are
 public references from existing industry examples: Dental Angels, AR KFZ, Padelclub Plattling,
 Norinohi and Schmidt & Schmidt document services. The legal case is document services rather than
 a law firm. No unpublished customer prompt or knowledge file is copied into the plugin.
 
-First deploy the backend MCP branch, issue an environment-specific admin token, install this
-marketplace's dev branch and configure `agentdeck@agentdeck`. Then run:
+Each evaluation run gets a fresh Claude config directory, so a browser sign-in does not carry
+over, and only `EVAL_*` variables from your shell reach it. So the live suite runs on a copy of the
+plugin whose MCP header reads `EVAL_AGENTDECK_TOKEN`. First deploy the backend MCP branch and issue
+an environment-specific admin token ([internal setup](../docs/internal-setup.md)). Then:
 
 ```sh
-claude plugin eval agentdeck@agentdeck --eval-dir evals-live --mocks off --runs 1 --ablation none --trust-plugin --no-publish --max-cost-usd 20 --allow-tools Write Edit "Bash(python3 *)" "WebFetch(domain:dentalangels.hu)" "WebFetch(domain:ar-kfz-technik.e-m-ritter.chatgpt.site)" "WebFetch(domain:padelclub-plattling.de)" "WebFetch(domain:www.padelclub-plattling.de)" "WebFetch(domain:norinohi.com)" "WebFetch(domain:www.norinohi.com)" "WebFetch(domain:schmidt-export.com)" "WebFetch(domain:www.schmidt-export.com)" "mcp__plugin_agentdeck_agentdeck__*"
+python3 scripts/prepare_eval_plugin.py --environment dev --output /tmp/agentdeck-eval
+read -rs EVAL_AGENTDECK_TOKEN && export EVAL_AGENTDECK_TOKEN   # paste the adk_ token; it is not echoed
+claude plugin eval /tmp/agentdeck-eval --eval-dir evals-live --mocks off --runs 1 --ablation none --trust-plugin --no-publish --max-cost-usd 20 --allow-tools Write Edit "Bash(python3 *)" "WebFetch(domain:dentalangels.hu)" "WebFetch(domain:ar-kfz-technik.e-m-ritter.chatgpt.site)" "WebFetch(domain:padelclub-plattling.de)" "WebFetch(domain:www.padelclub-plattling.de)" "WebFetch(domain:norinohi.com)" "WebFetch(domain:www.norinohi.com)" "WebFetch(domain:schmidt-export.com)" "WebFetch(domain:www.schmidt-export.com)" "mcp__plugin_agentdeck_agentdeck__*"
 ```
 
 Use `--case dental` for the first live smoke test. Ten or more independent chats per agent are
 required; each language, grounding, unknown facts and action boundaries are judged. Correctly
-stopping on a missing token or failed crawl still fails live acceptance: it did not prove a working
+stopping on a missing sign-in or failed crawl still fails live acceptance: it did not prove a working
 agent. Do not retry the whole suite blindly: it creates up to five new tenants per run and consumes
 daily create limits. Reuse the private creation state/IDs when resuming an interrupted case.
 
@@ -54,7 +58,8 @@ cross-environment equivalence. Go-live is a handover of the snippet and channel 
 Offline validation and helper tests run without credentials, and `validate` is the check main
 requires. Live acceptance against dev is started by hand from dev (Actions → live-acceptance). It
 needs an `ANTHROPIC_API_KEY` and an `AGENTDECK_EVAL_TOKEN` in the protected GitHub environment
-`dev-evaluations`; until those exist it stops at its first step without running anything.
+`dev-evaluations`; until those exist it stops at its first step without running anything. It
+prepares the token-reading copy above and passes the secret as `EVAL_AGENTDECK_TOKEN`.
 
 The workflow refuses missing secrets instead of treating a skipped evaluation as success. It does
 not publish reports or automatically merge a release. CI reports remain on its ephemeral runner;

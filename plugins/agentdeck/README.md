@@ -11,9 +11,11 @@ Install the Claude Code team preview (each command separately):
 /plugin install agentdeck@agentdeck
 ```
 
-Customers obtain a business-scoped token from AgentDeck Settings → Connect Claude Code when
-customer access is enabled. Select the matching environment and enter that token in the masked
-option. Restart Claude Code. Create with `/agentdeck:create-agent <website-or-brief>`.
+Then run `/mcp`, choose `agentdeck`, **Authenticate**, and choose **Allow** in the browser while
+signed in to AgentDeck. The environment is dev unless you change it with
+`/plugin configure agentdeck@agentdeck`. Use either this plugin or `claude mcp add` for AgentDeck,
+not both. Create with `/agentdeck:create-agent <website-or-brief>`. The workflow guidance itself is
+served by the AgentDeck server, so it stays current without a plugin update.
 For Codex CLI 0.164.0 or newer, add the native marketplace and package in your terminal:
 
 ```sh

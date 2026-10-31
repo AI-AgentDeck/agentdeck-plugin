@@ -74,7 +74,7 @@ def main():
     except (ValueError, OSError, urllib.error.URLError, EOFError) as error:
         print(str(error), file=sys.stderr)
         return 1
-    print("Token saved privately to " + str(saved) + ". Configure it as the plugin's masked token option.")
+    print("Token saved privately to " + str(saved) + ". Use it with run_codex.py --token-file or as EVAL_AGENTDECK_TOKEN for a headless evaluation.")
     return 0
 
 
