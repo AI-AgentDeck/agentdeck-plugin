@@ -1,33 +1,34 @@
+<img src="../../docs/assets/agentdeck-icon.svg" width="56" height="56" alt="AgentDeck">
+
 # AgentDeck
 
-Create business agents from approved websites, documents or briefs in Claude Code or Codex. The plugin
-uses AgentDeck's MCP tools to validate configuration, build knowledge and run isolated test chats.
-It returns a preview, portable bundle and evidence report, and offers update/test/publishing-handover skills.
+Build, test and update the AI agent that answers your customers, from your website, in Claude Code or
+Codex. AgentDeck reads the site, builds an agent that answers only from your own material, test-chats it
+and hands you a preview link and the snippet for your site.
 
-Install the Claude Code team preview (each command separately):
+**Claude Code** — install, then sign in with `/mcp` → **agentdeck** → **Authenticate** → **Allow**:
 
 ```text
-/plugin marketplace add AI-AgentDeck/agentdeck-plugin#dev
+/plugin marketplace add AI-AgentDeck/agentdeck-plugin
 /plugin install agentdeck@agentdeck
+/agentdeck:create-agent https://your-business.com
 ```
 
-Customers obtain a business-scoped token from AgentDeck Settings → Connect Claude Code when
-customer access is enabled. Select the matching environment and enter that token in the masked
-option. Restart Claude Code. Create with `/agentdeck:create-agent <website-or-brief>`.
-For Codex CLI 0.164.0 or newer, add the native marketplace and package in your terminal:
+**Codex CLI** — install, sign in, then use `$agentdeck:create-agent` in a new session:
 
 ```sh
-codex plugin marketplace add AI-AgentDeck/agentdeck-plugin --ref dev
+codex plugin marketplace add AI-AgentDeck/agentdeck-plugin
 codex plugin add agentdeck@agentdeck
+codex mcp login agentdeck
 ```
 
-Use the repository README's hidden-prompt launcher to select the environment and supply your
-workspace token without saving it in configuration or command arguments. In a new Codex session,
-use `$agentdeck:create-agent Create a preview for <website> in dev.` Shared workflows preserve
-the same workspace limits, validation, knowledge and test-isolation rules.
+The other commands are `test-agent`, `update-agent` and `go-live`. No token is needed: you sign in with
+your AgentDeck account. This preview connects to the dev environment.
 
-Production acceptance comes before placing an agent on a customer's website; a READY agent needs no other activation.
+In the Claude desktop app: **Add marketplace** → `AI-AgentDeck/agentdeck-plugin` → **Sync** → install
+**AgentDeck**.
 
-Customer setup, internal admin setup, validation and known limits are in the
-[repository README](https://github.com/AI-AgentDeck/agentdeck-plugin/tree/dev#readme).
-Privacy: <https://agentdeck.eu/privacy/>. License: MIT.
+Full guide, Claude and ChatGPT connectors and troubleshooting:
+[repository README](https://github.com/AI-AgentDeck/agentdeck-plugin#readme).
+[Website](https://agentdeck.eu) · [Client hub](https://client-hub.agentdeck.eu) ·
+[Privacy](https://client-hub.agentdeck.eu/privacy-policy) · MIT license.

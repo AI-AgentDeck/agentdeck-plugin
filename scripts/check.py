@@ -28,12 +28,10 @@ def check():
         raise ValueError("installation namespace must remain agentdeck")
     if marketplace["plugins"][0]["source"] != "./plugins/agentdeck":
         raise ValueError("marketplace must install the package in this repository")
-    if mcp["url"] != "${user_config.mcp_url}" or mcp["headers"]["Authorization"] != "Bearer ${user_config.token}":
-        raise ValueError("MCP must use configured endpoint and token")
-    if manifest["userConfig"]["token"].get("sensitive") is not True:
-        raise ValueError("token option must use secure storage")
-    if "default" in manifest["userConfig"]["token"]:
-        raise ValueError("token option cannot have a default credential")
+    if mcp["url"] != "${user_config.mcp_url}":
+        raise ValueError("MCP must use the configured endpoint")
+    if any(name.lower() == "authorization" for name in mcp["headers"]) or set(manifest["userConfig"]) != {"mcp_url"}:
+        raise ValueError("Claude Code connects by signing in: a static Authorization header or token option disables it")
     if (ROOT / "AGENTS.md").read_bytes() != (ROOT / "CLAUDE.md").read_bytes():
         raise ValueError("AGENTS.md and CLAUDE.md differ")
     if codex_marketplace["name"] != "agentdeck" or codex_manifest["name"] != "agentdeck":
@@ -42,8 +40,10 @@ def check():
         raise ValueError("Codex marketplace must use the shared package")
     if codex_manifest["skills"] != "./skills/" or codex_manifest["mcpServers"] != "./.codex.mcp.json":
         raise ValueError("Codex must load shared skills and its native MCP configuration")
-    if codex_mcp["url"] != "https://dev-api.agentdeck.eu/mcp" or codex_mcp["bearer_token_env_var"] != "AGENTDECK_TOKEN":
-        raise ValueError("Codex preview must use dev and an environment-supplied token")
+    if codex_mcp["url"] != "https://dev-api.agentdeck.eu/mcp":
+        raise ValueError("Codex preview must use dev")
+    if "bearer_token_env_var" in codex_mcp:
+        raise ValueError("Codex signs in with codex mcp login; a packaged token setting would replace that")
     if "Authorization" in codex_mcp["http_headers"] or "headers" in codex_mcp:
         raise ValueError("Codex credentials must not be embedded or use Claude's header format")
     for name in ["create-agent", "update-agent", "test-agent", "go-live"]:

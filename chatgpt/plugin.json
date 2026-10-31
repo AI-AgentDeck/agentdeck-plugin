@@ -1,0 +1,109 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "agentdeck",
+  "version": "0.5.0",
+  "description": "Create, test and update AI chat agents that answer a business's customers on its website, Instagram, WhatsApp, Messenger and Telegram, built from the business's own website and documents.",
+  "author": {
+    "name": "AgentDeck",
+    "email": "info@agentdeck.eu",
+    "url": "https://agentdeck.eu"
+  },
+  "homepage": "https://agentdeck.eu/connect/",
+  "repository": "https://github.com/AI-AgentDeck/agentdeck-plugin",
+  "license": "MIT",
+  "keywords": [
+    "chat agent",
+    "chatbot",
+    "customer support",
+    "website",
+    "instagram",
+    "whatsapp"
+  ],
+  "extensions": {
+    "com.openai": {
+      "interface": {
+        "displayName": "AgentDeck",
+        "shortDescription": "AI chat agents for your site",
+        "longDescription": "AgentDeck builds AI chat agents that answer your customers on your website and, once connected in the AgentDeck client hub, on Instagram, WhatsApp, Messenger and Telegram.\n\nTell ChatGPT about your business and your website. AgentDeck reads the site, asks a few questions (what the agent should achieve, which languages your customers write in, which contact details to collect and when a person should take over) and builds an agent that answers only from your own material. It then test-chats the agent with realistic customer questions, checks the answers against your website and gives you a preview link and a one-line snippet for your site.\n\nCome back any time to change what the agent says, add documents or test it again. You need an AgentDeck account; you can create one while connecting. Agents never invent prices, dates or policies: anything your material does not say is reported back to you as a question.",
+        "developerName": "AgentDeck",
+        "category": "Business",
+        "capabilities": [
+          "Create an AI chat agent from a business website",
+          "Test an agent with realistic customer questions",
+          "Update an agent's prompts, settings and knowledge",
+          "Add documents to an agent's knowledge",
+          "Explain how to put an agent on a website"
+        ],
+        "websiteURL": "https://agentdeck.eu",
+        "supportURL": "https://agentdeck.eu/legal-notice/",
+        "privacyPolicyURL": "https://client-hub.agentdeck.eu/privacy-policy",
+        "termsOfServiceURL": "https://client-hub.agentdeck.eu/terms-of-service",
+        "defaultPrompt": [
+          "Create an AgentDeck agent for https://my-business.example",
+          "Test my AgentDeck agent with five questions a new customer would ask",
+          "How do I put my AgentDeck agent on my website?"
+        ],
+        "brandColor": "#0d8c74",
+        "brandColorDark": "#1fb394",
+        "composerIcon": "./assets/composer-icon.png",
+        "logo": "./assets/logo.png"
+      },
+      "review": {
+        "test_cases": {
+          "positive": [
+            {
+              "description": "Create an agent for a business website",
+              "prompt": "Create an AgentDeck agent for https://agentdeck.eu that answers questions about the product and collects an email address from interested visitors.",
+              "tools_triggered": "whoami, get_guide, get_spec, crawl, validate_agent, create_agent, get_agent_status, test_agent",
+              "expected_behavior": "Reads the site, asks at most a few questions, creates the agent, waits until it is ready, tests it and returns a preview link, the website snippet and any open questions."
+            },
+            {
+              "description": "Test an existing agent",
+              "prompt": "Test my AgentDeck agent with five questions a first-time customer would ask and tell me which answers are wrong.",
+              "tools_triggered": "whoami, get_guide, get_agent, test_agent",
+              "expected_behavior": "Runs five test conversations and reports, for each, whether the answer matches the business's sources, quoting the evidence."
+            },
+            {
+              "description": "Change what an agent says",
+              "prompt": "Make my AgentDeck agent greet visitors in German and English and ask for a phone number before handing over to a person.",
+              "tools_triggered": "whoami, get_guide, get_agent, validate_agent, update_agent, test_agent",
+              "expected_behavior": "Reads the current setup, changes only the greeting and hand-over, validates and saves it, and confirms with a test conversation."
+            },
+            {
+              "description": "Add a document to the agent's knowledge",
+              "prompt": "Add this price list to my AgentDeck agent and check that it now quotes the new prices.",
+              "tools_triggered": "whoami, upload_document, get_agent_status, test_agent",
+              "expected_behavior": "Uploads the attached document, waits until it is indexed and shows a test answer that quotes a price from it."
+            },
+            {
+              "description": "Explain how to go live",
+              "prompt": "How do I put my AgentDeck agent on my Wix website?",
+              "tools_triggered": "whoami, get_guide, get_agent",
+              "expected_behavior": "Gives the agent's website snippet and plain steps for adding custom code in Wix, plus where channels are connected in the client hub."
+            }
+          ],
+          "negative": [
+            {
+              "description": "Unrelated question; no AgentDeck tool should run",
+              "prompt": "What will the weather be in Berlin tomorrow?"
+            },
+            {
+              "description": "Payment request; AgentDeck cannot move money and should say so",
+              "prompt": "Use AgentDeck to pay my supplier 200 euros."
+            },
+            {
+              "description": "Image generation; AgentDeck builds chat agents and makes no images",
+              "prompt": "Use AgentDeck to design a logo image for my bakery."
+            }
+          ]
+        },
+        "demo_recording_url": "",
+        "commerce": false,
+        "commerce_description": ""
+      },
+      "publication": {
+        "release_notes": "First public release: create, test, update and publish AgentDeck chat agents from ChatGPT."
+      }
+    }
+  }
+}
