@@ -23,9 +23,8 @@ questions — what the agent should achieve, which languages your customers writ
 take over — and builds an agent that answers only from your own material. It then test-chats the agent,
 checks the answers against your website and hands you a preview link and a one-line snippet for your site.
 
-> **Preview.** This is the team preview on the `dev` branch, connected to the dev environment
-> (`dev-api.agentdeck.eu`, client hub `dev-client-hub.agentdeck.eu`). Production customer access is not
-> switched on yet.
+> **Preview.** The plugin and the addresses below connect to the dev environment (`dev-api.agentdeck.eu`,
+> client hub `dev-client-hub.agentdeck.eu`). Production customer access is not switched on yet.
 
 ## Pick your app
 
@@ -34,7 +33,11 @@ checks the answers against your website and hands you a preview link and a one-l
 | **Claude** on the web, desktop or phone | No — add AgentDeck as a connector | [Claude](#claude-web-desktop-phone) |
 | **ChatGPT** (Plus, Pro, Business) | No — add AgentDeck as a connector | [ChatGPT](#chatgpt) |
 | **Claude Code** | The plugin (recommended) | [Claude Code](#claude-code) |
+| **The Claude desktop app** with the plugin | Add this repository as a marketplace | [Claude desktop app](#claude-desktop-app) |
 | **Codex CLI** | The plugin | [Codex](#codex-cli) |
+
+**The plugin installs from this repository's name alone:** wherever an app asks for a marketplace, enter
+[`AI-AgentDeck/agentdeck-plugin`](https://github.com/AI-AgentDeck/agentdeck-plugin) and install **AgentDeck**.
 
 Every app connects by **signing in with your AgentDeck account** and choosing **Allow**. You never copy an
 API key or a token. No account yet? [Create one in the client hub](https://client-hub.agentdeck.eu/sign-up).
@@ -50,7 +53,7 @@ Needs Claude Code **2.1.310 or newer** and Python **3.11 or newer**.
 **1. Install** — in Claude Code, one command at a time:
 
 ```text
-/plugin marketplace add AI-AgentDeck/agentdeck-plugin#dev
+/plugin marketplace add AI-AgentDeck/agentdeck-plugin
 ```
 
 ```text
@@ -79,6 +82,16 @@ result of `create-agent` and in the client hub.
 Use **either** the plugin **or** `claude mcp add` for AgentDeck in Claude Code, not both — otherwise the
 session has two AgentDeck servers.
 
+## Claude desktop app
+
+1. Open the app's plugins and choose **Add marketplace**.
+2. Enter `AI-AgentDeck/agentdeck-plugin` and click **Sync**.
+3. Install **AgentDeck** from the list, then sign in to AgentDeck and choose **Allow** when it asks.
+
+Use the same commands as in Claude Code, for example `/agentdeck:create-agent https://your-business.com`.
+If you only chat in the app and do not need saved files, the [connector](#claude-web-desktop-phone) is
+simpler still.
+
 ## Codex CLI
 
 Needs Codex CLI **0.164.0 or newer** and Python **3.11 or newer**. The IDE extension is not supported.
@@ -86,7 +99,7 @@ Needs Codex CLI **0.164.0 or newer** and Python **3.11 or newer**. The IDE exten
 **1. Install** — in your terminal, one command at a time:
 
 ```sh
-codex plugin marketplace add AI-AgentDeck/agentdeck-plugin --ref dev
+codex plugin marketplace add AI-AgentDeck/agentdeck-plugin
 ```
 
 ```sh
@@ -118,7 +131,7 @@ The packaged connection uses dev. To choose dev, prod or local for one session, 
 of this repository, run from the folder where your agent files should be written:
 
 ```sh
-git clone --branch dev https://github.com/AI-AgentDeck/agentdeck-plugin.git
+git clone https://github.com/AI-AgentDeck/agentdeck-plugin.git
 ```
 
 ```sh
@@ -246,7 +259,7 @@ bundle, removing omitted sections. For another Claude Code environment run
 
 ### Develop and validate
 
-The team preview is installed from `dev`:
+Customers install from `main`, the default branch. To try unreleased changes, install from `dev`:
 
 ```text
 /plugin marketplace add AI-AgentDeck/agentdeck-plugin#dev
