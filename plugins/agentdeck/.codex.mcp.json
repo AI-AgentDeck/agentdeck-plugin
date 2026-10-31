@@ -2,9 +2,9 @@
   "mcpServers": {
     "agentdeck": {
       "type": "http",
-      "url": "https://dev-api.agentdeck.eu/mcp",
+      "url": "https://api.agentdeck.eu/mcp",
       "http_headers": {
-        "X-Agentdeck-Plugin-Version": "0.5.0"
+        "X-Agentdeck-Plugin-Version": "0.5.1"
       }
     }
   }

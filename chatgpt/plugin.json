@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "agentdeck",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "Create, test and update AI chat agents that answer a business's customers on its website, Instagram, WhatsApp, Messenger and Telegram, built from the business's own website and documents.",
   "author": {
     "name": "AgentDeck",
