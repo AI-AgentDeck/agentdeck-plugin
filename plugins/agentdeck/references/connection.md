@@ -44,9 +44,9 @@ missing, a call answers 401, or `/mcp` shows the server as needing authenticatio
 
 The environment is the plugin option `/plugin configure agentdeck@agentdeck` (dev by default).
 
-In Codex, the connection uses a workspace token from AgentDeck Settings, supplied through the
-repository's launcher (see the runtime guide). Never ask a customer for an admin login or a
-console session token.
+In Codex the connection signs in too: ask the user to run `codex mcp login agentdeck` in a
+terminal (or the launcher with `--login` for another environment), choose **Allow** in the browser
+and start a new session. Never ask a customer for a token, an admin login or a console session token.
 
 A 404 can mean the backend feature is disabled or not deployed. A 503 is an operational failure,
 not a reason to sign in again.

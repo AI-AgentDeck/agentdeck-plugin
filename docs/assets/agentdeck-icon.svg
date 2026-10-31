@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="AgentDeck">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#1a9b73"/>
+      <stop offset="1" stop-color="#4ad19f"/>
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="18" fill="#0c1410"/>
+  <rect x="9" y="9" width="46" height="46" rx="11" fill="url(#g)"/>
+  <circle cx="47" cy="17" r="7" fill="#ffb24a" stroke="#0c1410" stroke-width="4"/>
+</svg>
