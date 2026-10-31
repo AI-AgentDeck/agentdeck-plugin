@@ -3,12 +3,20 @@
   "displayName": "AgentDeck",
   "version": "0.5.0",
   "description": "Create, refine and test business agents using AgentDeck's MCP tools. Return a preview, portable bundle and evidence-based quality report.",
-  "author": { "name": "AI-AgentDeck", "url": "https://github.com/AI-AgentDeck" },
+  "author": {
+    "name": "AI-AgentDeck",
+    "url": "https://github.com/AI-AgentDeck"
+  },
   "repository": "https://github.com/AI-AgentDeck/agentdeck-plugin",
   "homepage": "https://github.com/AI-AgentDeck/agentdeck-plugin#readme",
-  "privacyPolicyUrl": "https://agentdeck.eu/privacy/",
+  "privacyPolicyUrl": "https://client-hub.agentdeck.eu/privacy-policy",
   "license": "MIT",
-  "keywords": ["agentdeck", "business-agents", "knowledge-base", "mcp"],
+  "keywords": [
+    "agentdeck",
+    "business-agents",
+    "knowledge-base",
+    "mcp"
+  ],
   "userConfig": {
     "mcp_url": {
       "type": "string",

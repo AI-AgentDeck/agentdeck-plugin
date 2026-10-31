@@ -55,3 +55,11 @@ credential file; choose a new `--output` filename when issuing a replacement. Re
 is no longer needed.
 
 See [SECURITY.md](../SECURITY.md) for credential handling and vulnerability reports.
+
+## ChatGPT plugin directory package
+
+`chatgpt/` holds what OpenAI's plugin submission portal takes: `plugin.json` (listing, review test cases),
+`mcp.json` (the production server, sign-in by dynamic client registration, no headers) and the icons. Build the
+ZIP with `python3 scripts/build_chatgpt_package.py --demo-url <recording URL>` (or `--draft` for the portal's
+automated checks) and upload `dist/agentdeck-chatgpt.zip`. `tests/test_chatgpt_package.py` holds the portal's
+limits. The full submission walk-through is `docs/directory/SUBMISSION.md` in agent-backend.
