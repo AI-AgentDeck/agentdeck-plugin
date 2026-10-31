@@ -1,9 +1,9 @@
 # Internal setup: create an admin token
 
 This guide is for AgentDeck staff and developers. In Claude Code, staff connect the plugin the same
-way customers do — `/mcp` → `agentdeck` → **Authenticate**, signed in as an admin — and need no
-token. A token is still needed for Codex, which connects with one, and for a headless live
-evaluation, which cannot sign in through a browser. For customer onboarding, use
+way customers do — `/mcp` → `agentdeck` → **Authenticate**, signed in as an admin — and in Codex
+with `codex mcp login agentdeck`; neither needs a token. A token is needed only for scripts and a
+headless live evaluation, which cannot sign in through a browser. For customer onboarding, use
 [Customer setup](../README.md#customer-setup).
 
 ## Requirements
@@ -27,7 +27,7 @@ do not substitute its ID token. Keep it out of chats and shell history.
 From the cloned repository:
 
 ```sh
-python3 scripts/mint_token.py --api https://dev-api.agentdeck.eu --name codex
+python3 scripts/mint_token.py --api https://dev-api.agentdeck.eu --name scripts
 ```
 
 Paste the console access token into the hidden terminal prompt. The helper requests an ADMIN token
@@ -38,7 +38,7 @@ the console access token is invalid or expired.
 
 ## Use it
 
-- **Codex:** `python3 plugins/agentdeck/scripts/run_codex.py --environment dev --token-file ~/.config/agentdeck/tokens/dev.json`.
+- **A scripted Codex run:** `python3 plugins/agentdeck/scripts/run_codex.py --environment dev --token-file ~/.config/agentdeck/tokens/dev.json`.
 - **Headless live evaluation:** `python3 scripts/prepare_eval_plugin.py --environment dev --output <new dir>`
   copies the plugin with an MCP header that reads `EVAL_AGENTDECK_TOKEN`; see
   [the evaluation guide](../evals/README.md). The token is never written into the copy.

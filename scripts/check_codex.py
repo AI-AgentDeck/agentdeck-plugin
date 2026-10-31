@@ -131,6 +131,8 @@ def check():
             mcp = json.loads(mcp_path.read_text())
             endpoint = "http://127.0.0.1:" + str(server.server_port) + "/mcp"
             mcp["mcpServers"]["agentdeck"]["url"] = endpoint
+            # The package signs in through a browser; this headless check uses the token path scripts use.
+            mcp["mcpServers"]["agentdeck"]["bearer_token_env_var"] = "AGENTDECK_TOKEN"
             mcp_path.write_text(json.dumps(mcp))
             home = base / "codex-home"
             home.mkdir()

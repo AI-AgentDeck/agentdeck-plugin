@@ -40,8 +40,10 @@ def check():
         raise ValueError("Codex marketplace must use the shared package")
     if codex_manifest["skills"] != "./skills/" or codex_manifest["mcpServers"] != "./.codex.mcp.json":
         raise ValueError("Codex must load shared skills and its native MCP configuration")
-    if codex_mcp["url"] != "https://dev-api.agentdeck.eu/mcp" or codex_mcp["bearer_token_env_var"] != "AGENTDECK_TOKEN":
-        raise ValueError("Codex preview must use dev and an environment-supplied token")
+    if codex_mcp["url"] != "https://dev-api.agentdeck.eu/mcp":
+        raise ValueError("Codex preview must use dev")
+    if "bearer_token_env_var" in codex_mcp:
+        raise ValueError("Codex signs in with codex mcp login; a packaged token setting would replace that")
     if "Authorization" in codex_mcp["http_headers"] or "headers" in codex_mcp:
         raise ValueError("Codex credentials must not be embedded or use Claude's header format")
     for name in ["create-agent", "update-agent", "test-agent", "go-live"]:

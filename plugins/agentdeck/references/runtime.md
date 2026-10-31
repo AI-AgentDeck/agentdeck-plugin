@@ -19,14 +19,15 @@ Claude appends the invocation arguments to skills automatically.
 ## Codex CLI
 
 Install the Codex marketplace and plugin using the repository README. The packaged MCP connection
-uses the dev endpoint, reads the bearer token from `AGENTDECK_TOKEN`, and supplies the plugin-version
-header. The session launcher selects dev, prod or local explicitly and sets a session-only MCP
-configuration. Its `AGENTDECK_MCP_URL` is nonsecret; it identifies the expected environment. If that
-variable is absent, the packaged connection expects dev. Do not read or print `AGENTDECK_TOKEN`.
+uses the dev endpoint, signs in through the browser (`codex mcp login agentdeck`) and supplies the
+plugin-version header. The session launcher selects dev, prod or local explicitly and sets a
+session-only MCP configuration. Its `AGENTDECK_MCP_URL` is nonsecret; it identifies the expected
+environment. If that variable is absent, the packaged connection expects dev. A script may run the
+launcher with a token in `AGENTDECK_TOKEN`; do not read or print it.
 
-Start the launcher from a terminal, never as a model tool call requiring an interactive secret.
-For missing authentication, ask the operator to run the launcher with their workspace token using
-its hidden prompt, token-file or token-env option. Do not run Claude's configuration command.
+For missing authentication, ask the operator to run `codex mcp login agentdeck` in a terminal, or
+the launcher with `--login`, and choose **Allow** in the browser. Never ask for a token in chat.
+Do not run Claude's configuration command.
 
 Codex exposes the skills as `$agentdeck:create-agent`, `$agentdeck:update-agent`,
 `$agentdeck:test-agent` and `$agentdeck:go-live`. Their input is the user's surrounding request.

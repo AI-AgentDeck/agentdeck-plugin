@@ -3,7 +3,6 @@
     "agentdeck": {
       "type": "http",
       "url": "https://dev-api.agentdeck.eu/mcp",
-      "bearer_token_env_var": "AGENTDECK_TOKEN",
       "http_headers": {
         "X-Agentdeck-Plugin-Version": "0.5.0"
       }

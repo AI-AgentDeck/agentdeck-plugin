@@ -16,8 +16,8 @@ skills and separate MCP configuration.
 ## Customer setup
 
 Use an AgentDeck account and Python **3.11 or newer** for local bundle helpers.
-Choose the runtime you use below. Claude Code connects by signing in; Codex uses a workspace token
-from the **Connect Claude Code** settings page.
+Choose the runtime you use below. Claude Code and Codex both connect by signing in with your
+AgentDeck account; no token is needed.
 
 Customer connection is available only in environments where customer access has been enabled.
 Production customer access is not enabled yet; use the dev console for this preview.
@@ -60,8 +60,17 @@ codex plugin marketplace add AI-AgentDeck/agentdeck-plugin --ref dev
 codex plugin add agentdeck@agentdeck
 ```
 
-Codex connects with a token. Create a workspace token in AgentDeck **Settings → Connect Claude Code**. To start a session with
-an explicit environment and a hidden token prompt, obtain the launcher from this repository:
+Sign in once, then start a new Codex session:
+
+```sh
+codex mcp login agentdeck
+```
+
+Your browser opens AgentDeck; sign in and choose **Allow**. This connects AgentDeck only — you log
+into Codex with your usual Codex account, and nothing here creates an OpenAI API key. The packaged
+connection uses dev.
+
+To pick another environment, obtain the launcher from this repository:
 
 ```sh
 git clone --branch dev https://github.com/AI-AgentDeck/agentdeck-plugin.git
@@ -71,13 +80,11 @@ Run the launcher from the directory where you want bundles and reports to be wri
 `/path/to` with the parent of your clone:
 
 ```sh
-python3 /path/to/agentdeck-plugin/plugins/agentdeck/scripts/run_codex.py --environment dev
+python3 /path/to/agentdeck-plugin/plugins/agentdeck/scripts/run_codex.py --environment dev --login
 ```
 
-Paste the token into the terminal's hidden prompt. The launcher passes it only to that Codex
-process, supplies the matching MCP endpoint/version and does not save it to disk or shell history.
-You log into Codex separately using your usual Codex account. This AgentDeck token does not replace
-Codex authentication or create an OpenAI API key.
+`--login` signs in to that environment before the session starts; leave it out once you are signed in.
+The launcher supplies the matching MCP endpoint and version for that session only.
 
 Start a new session after installation or an update. In Codex, use a bundled skill:
 
@@ -89,15 +96,13 @@ The other skills are `$agentdeck:update-agent`, `$agentdeck:test-agent` and `$ag
 You can also describe the AgentDeck task normally. An independent judge requires a host that can
 start a fresh agent; without one, acceptance remains INCOMPLETE with artifacts ready for review.
 
-For automation, use `--token-env NAME` or `--token-file /private/token.json` instead of the prompt.
-The file format is a JSON object with a `token` field, as written by the internal mint helper.
-Append Codex options after `--`, such as `-- --cd /path/to/business-workspace`. The launcher supports
-`dev`, `prod` and `local`; production customer access remains disabled until separately released.
-Do not put a token directly in command arguments or paste it into a Codex conversation.
-
-For dev-only sessions, you may instead supply `AGENTDECK_TOKEN` securely through your existing
-process environment and start Codex normally. The packaged connection defaults to dev. Use the
-launcher when selecting another environment. To update the cached package:
+Scripts and automated runs that cannot open a browser use a personal token instead (AgentDeck
+**Settings → Connect AI apps → Advanced**), with `--token-env NAME` or
+`--token-file /private/token.json` — a JSON object with a `token` field, as written by the internal
+mint helper. Append Codex options after `--`, such as `-- --cd /path/to/business-workspace`. The
+launcher supports `dev`, `prod` and `local`; production customer access remains disabled until
+separately released. Do not put a token directly in command arguments or paste it into a Codex
+conversation. To update the cached package:
 
 ```sh
 codex plugin marketplace upgrade agentdeck
