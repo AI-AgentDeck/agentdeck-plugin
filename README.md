@@ -40,7 +40,7 @@ checks the answers against your website and hands you a preview link and a one-l
 [`AI-AgentDeck/agentdeck-plugin`](https://github.com/AI-AgentDeck/agentdeck-plugin) and install **AgentDeck**.
 
 Every app connects by **signing in with your AgentDeck account** and choosing **Allow**. You never copy an
-API key or a token. No account yet? [Create one in the client hub](https://client-hub.agentdeck.eu/sign-up).
+API key or a token. No account yet? Write to [info@agentdeck.eu](mailto:info@agentdeck.eu) and we set one up.
 
 The plugin adds what a connector cannot: ready-made commands, local copies of every agent, and an
 independent second check of each test conversation. The rules for building a good agent are served by
