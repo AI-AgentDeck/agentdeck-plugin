@@ -15,7 +15,8 @@ first and [the runtime guide](../../references/runtime.md) for paths, tools and 
 1. Call `whoami` and check it as the connection guide says. A missing `guideVersion` means the
    server is older than this plugin: tell the user the AgentDeck server needs updating and stop.
    For a TENANT, save the returned tenant ID in private run state and never take another workspace
-   from user input.
+   from user input. If `.agentdeck-work/<slug>/` or `list_agents` shows this business was started
+   before, continue that agent (status, test, update) instead of creating a second one.
 2. Call `get_guide(topic="create")` and follow it. When it sends you to another topic, call it:
    `get_guide(topic="overview")`, `get_guide(topic="prompt-design")`,
    `get_guide(topic="industry-patterns")`, `get_guide(topic="evaluation")` and

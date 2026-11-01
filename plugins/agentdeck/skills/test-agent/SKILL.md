@@ -3,7 +3,7 @@ name: test-agent
 description: Evaluate an existing AgentDeck agent against approved business sources with isolated conversations and an independent judge.
 ---
 
-Use the user’s request as the agent ID and test focus. The AgentDeck server's guide says how to
+Use the user’s request as the agent to test (a name or an ID; find it with `list_agents`) and the test focus. The AgentDeck server's guide says how to
 test; this skill adds the local files and the independent judge. Read
 [connection](../../references/connection.md) and [the runtime guide](../../references/runtime.md).
 

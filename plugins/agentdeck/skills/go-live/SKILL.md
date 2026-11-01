@@ -3,7 +3,7 @@ name: go-live
 description: Check an AgentDeck agent's acceptance evidence and hand over its widget snippet and channel steps.
 ---
 
-Use the user’s request as the agent ID and the websites it should appear on. The AgentDeck server's
+Use the user’s request as the agent (a name or an ID; find it with `list_agents`) and the websites it should appear on. The AgentDeck server's
 guide says what a handover contains; this skill adds where the local evidence is. Read
 [connection](../../references/connection.md).
 
