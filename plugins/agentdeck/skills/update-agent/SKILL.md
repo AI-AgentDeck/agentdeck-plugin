@@ -9,9 +9,8 @@ to update safely; this skill adds the local files and the independent judge. Rea
 
 1. Call `whoami` and check it as the connection guide says. A missing `guideVersion` means the
    server is older than this plugin: tell the user the AgentDeck server needs updating and stop.
-2. Call `get_guide(topic="update")` and follow it. When it refers to them, call
-   `get_guide(topic="overview")`, `get_guide(topic="prompt-design")`,
-   `get_guide(topic="evaluation")` and `get_guide(topic="server-rules")`. Do not fill a missing
+2. Read the guide in one call, `get_guide(topics=["update", "overview", "prompt-design",
+   "evaluation", "server-rules"])`, and follow the update topic. Do not fill a missing
    topic from memory — report it.
 3. Find the agent with `list_agents` (`query` with the agent or business name); if several match,
    let the user pick. Never guess, and never act outside the connection's scope.

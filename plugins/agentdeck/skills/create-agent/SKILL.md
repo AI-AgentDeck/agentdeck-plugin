@@ -17,13 +17,11 @@ first and [the runtime guide](../../references/runtime.md) for paths, tools and 
    For a TENANT, save the returned tenant ID in private run state and never take another workspace
    from user input. If `.agentdeck-work/<slug>/` or `list_agents` shows this business was started
    before, continue that agent (status, test, update) instead of creating a second one.
-2. Call `get_guide(topic="create")` and follow it. When it sends you to another topic, call it:
-   `get_guide(topic="overview")`, `get_guide(topic="prompt-design")`,
-   `get_guide(topic="industry-patterns")`, `get_guide(topic="evaluation")` and
-   `get_guide(topic="server-rules")`. The served guide is the authority; do not fill a missing
+2. Read the guide in one call, `get_guide(topics=["create", "overview", "prompt-design",
+   "industry-patterns", "evaluation", "server-rules"])`, and follow the create topic. The served guide is the authority; do not fill a missing
    topic from memory — report it instead. `whoami.recommendedModels` is advice for the AI app the user chats in; the agent's own model comes only from `whoami.models`.
 3. Keep the source ledger and private run state under `.agentdeck-work/<slug>/`.
-4. After `validate_agent` passes and before the first `create_agent`, save the candidate locally and
+4. Before the first `create_agent` (it checks the bundle itself; there is no separate dry run), save the candidate locally and
    run the bundled `scripts/bundle.py prepare` with a descriptive slug and
    `--environment dev|prod|local` (for TENANT also `--tenant-id <whoami.tenantId>`). It records the
    idempotency key, bound to this environment and workspace. Retry an uncertain create only with

@@ -29,7 +29,7 @@ Call `whoami` before anything else.
   update instructions and stop before writes. A missing header can also mean a proxy strips it.
 - Record the caps. A 429 or `cap_reached` ends costly work; show the reset instead of looping.
 
-Then follow the server's guide (`get_guide`), its `get_spec` and the tool schemas. The server is
+Then follow the server's guide (`get_guide`), its `get_spec` and the tool schemas. Read several guide topics in one `get_guide` call with `topics`; an older server answers that with its topic list instead of their texts, and then each topic is read on its own with the `topic` argument. The server is
 the authority for keys, models, enabled tools and validation; describe a capability gap when a
 required tool is absent.
 

@@ -9,9 +9,8 @@ test; this skill adds the local files and the independent judge. Read
 
 1. Call `whoami` and check it as the connection guide says. A missing `guideVersion` means the
    server is older than this plugin: tell the user the AgentDeck server needs updating and stop.
-2. Call `get_guide(topic="test")` and follow it, with `get_guide(topic="evaluation")` for the
-   checklist and, when it refers to them, `get_guide(topic="overview")` and
-   `get_guide(topic="server-rules")`. Do not fill a missing topic from memory — report it.
+2. Read the guide in one call, `get_guide(topics=["test", "evaluation", "overview", "server-rules"])`,
+   and follow the test topic. Run independent cases together with `cases` (up to 3 per call). Do not fill a missing topic from memory — report it.
 3. In addition to the guide's checklist, send the sources, expected behavior and complete
    transcripts to the plugin's independent judge (see the runtime guide). Its review is read-only.
    An unavailable judge leaves cases INCOMPLETE; a case passes only when both pass it.
