@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.6.0
+
+- Needs the matching AgentDeck server. Skills read several guide topics in one `get_guide` call,
+  run test conversations side by side with `test_agent` cases, send an update as a patch with the
+  agent's fingerprint, and create without a `validate_agent` dry run first.
+- Status and crawl calls wait on the server with `waitSeconds`; an answer with `waited: false`
+  means the server was busy, and the skill waits `retryAfterSeconds` before asking again.
+
 ## 0.5.1
 
 - Connects to production (`https://api.agentdeck.eu/mcp`) by default, in Claude Code and Codex; the

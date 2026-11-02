@@ -4,7 +4,7 @@
       "type": "http",
       "url": "https://api.agentdeck.eu/mcp",
       "http_headers": {
-        "X-Agentdeck-Plugin-Version": "0.5.1"
+        "X-Agentdeck-Plugin-Version": "0.6.0"
       }
     }
   }
