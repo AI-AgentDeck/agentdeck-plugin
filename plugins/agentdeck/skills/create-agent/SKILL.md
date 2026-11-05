@@ -20,17 +20,24 @@ first and [the runtime guide](../../references/runtime.md) for paths, tools and 
 2. Read the guide in one call, `get_guide(topics=["create", "overview", "prompt-design",
    "industry-patterns", "evaluation", "server-rules"])`, and follow the create topic. The served guide is the authority; do not fill a missing
    topic from memory — report it instead. `whoami.recommendedModels` is advice for the AI app the user chats in; the agent's own model comes only from `whoami.models`.
-3. Keep the source ledger and private run state under `.agentdeck-work/<slug>/`.
-4. Before the first `create_agent` (it checks the bundle itself; there is no separate dry run), save the candidate locally and
+3. Start from an industry template as the create topic's step 3 says: once you know what the business
+   sells, to whom and how a customer buys, call `find_industry_templates` with a few English
+   sentences, and read only the chosen card's parts with `get_industry_template` (`guide` and
+   `questions` while consulting, `bundle` when you build, `tests` once the agent exists). Recommend
+   the template to the user with its reasons and ask its questions with your recommended answers.
+   Fill every `{{slot}}`; the server refuses a bundle with one left. When no card is close, or the
+   server does not list these tools, build without one and say so.
+4. Keep the source ledger and private run state under `.agentdeck-work/<slug>/`.
+5. Before the first `create_agent` (it checks the bundle itself; there is no separate dry run), save the candidate locally and
    run the bundled `scripts/bundle.py prepare` with a descriptive slug and
    `--environment dev|prod|local` (for TENANT also `--tenant-id <whoami.tenantId>`). It records the
    idempotency key, bound to this environment and workspace. Retry an uncertain create only with
    the same bundle and that key. Save returned IDs and links in the private run state.
-5. Test as the guide's evaluation topic says, then — in addition to its checklist — send the
+6. Test as the guide's evaluation topic says, then — in addition to its checklist — send the
    business goal, approved source evidence, expectations and complete transcripts to the plugin's
    independent judge (see the runtime guide). A case passes only when both the checklist and the
    judge pass it; an unjudged case is INCOMPLETE.
-6. Read back `get_agent` and use `scripts/bundle.py save` to write the final id-free configuration to
+7. Read back `get_agent` and use `scripts/bundle.py save` to write the final id-free configuration to
    `./agentdeck/<slug>.json` (`--replace` for the candidate this run prepared). Write the report to
    `.agentdeck-work/<slug>/report.md`. Placing the agent on websites is the `go-live` skill.
 
