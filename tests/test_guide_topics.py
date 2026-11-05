@@ -5,7 +5,7 @@ import unittest
 
 PLUGIN = Path(__file__).resolve().parents[1] / "plugins/agentdeck"
 SERVED_TOPICS = {"overview", "create", "prompt-design", "industry-patterns", "test", "evaluation",
-                 "update", "go-live", "server-rules"}
+                 "update", "impact", "go-live", "server-rules"}
 OWN_TOPIC = {"create-agent": "create", "test-agent": "test", "update-agent": "update", "go-live": "go-live"}
 CALL = re.compile(r"get_guide\(([^)]*)\)")
 
