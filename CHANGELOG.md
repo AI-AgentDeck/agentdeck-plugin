@@ -5,6 +5,10 @@
 - Needs the matching AgentDeck server. Skills read several guide topics in one `get_guide` call,
   run test conversations side by side with `test_agent` cases, send an update as a patch with the
   agent's fingerprint, and create without a `validate_agent` dry run first.
+- Creating an agent starts from an industry template: `find_industry_templates` picks the closest
+  card, `get_industry_template` serves its guide, questions, setup and tests a part at a time, and
+  a bundle with an unfilled `{{slot}}` is refused. Without a close card, or on an older server, the
+  skill builds without one.
 - Status and crawl calls wait on the server with `waitSeconds`; an answer with `waited: false`
   means the server was busy, and the skill waits `retryAfterSeconds` before asking again.
 
