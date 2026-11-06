@@ -5,7 +5,7 @@ import unittest
 
 PLUGIN = Path(__file__).resolve().parents[1] / "plugins/agentdeck"
 SERVED_TOPICS = {"overview", "create", "prompt-design", "industry-patterns", "test", "evaluation",
-                 "update", "go-live", "server-rules"}
+                 "update", "impact", "go-live", "server-rules"}
 OWN_TOPIC = {"create-agent": "create", "test-agent": "test", "update-agent": "update", "go-live": "go-live"}
 CALL = re.compile(r"get_guide\(([^)]*)\)")
 
@@ -13,11 +13,24 @@ CALL = re.compile(r"get_guide\(([^)]*)\)")
 def named_topics(text):
     topics = set()
     for arguments in CALL.findall(text):
-        match = re.fullmatch(r'topic="([^"]+)"', arguments.strip())
-        if not match:
-            raise AssertionError("get_guide must be written as get_guide(topic=\"...\"): " + arguments)
-        topics.add(match.group(1))
+        one = re.fullmatch(r'topic="([^"]+)"', arguments.strip())
+        several = re.fullmatch(r'topics=\[([^\]]*)\]', " ".join(arguments.split()))
+        if one:
+            topics.add(one.group(1))
+        elif several:
+            topics.update(re.findall(r'"([^"]+)"', several.group(1)))
+        else:
+            raise AssertionError('get_guide must be written as get_guide(topic="...") or get_guide(topics=[...]): '
+                                 + arguments)
     return topics
+
+
+def first_call_naming(text, topic):
+    """Where the skill first reads that topic, alone or among several."""
+    for match in CALL.finditer(text):
+        if topic in named_topics(match.group(0)):
+            return match.start()
+    raise AssertionError("no get_guide call names " + topic)
 
 
 class GuideTopicsTest(unittest.TestCase):
@@ -31,7 +44,7 @@ class GuideTopicsTest(unittest.TestCase):
             with self.subTest(skill=skill):
                 text = (PLUGIN / "skills" / skill / "SKILL.md").read_text()
                 self.assertIn(topic, named_topics(text))
-                self.assertLess(text.index("`whoami`"), text.index('get_guide(topic="' + topic + '")'))
+                self.assertLess(text.index("`whoami`"), first_call_naming(text, topic))
                 self.assertIn("guideVersion", text)
 
 

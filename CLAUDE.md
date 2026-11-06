@@ -12,6 +12,13 @@ Keep all runtime manifest versions and MCP version headers equal. `dev` is the t
 branch; `main` is the release branch. A main pull request needs a passing `validate`; live
 acceptance on dev is a manual run.
 
+⚠️ **Every task starts from the latest `dev` — yours and every subagent's.** Before the first
+edit, `git fetch origin`. New work goes on a new branch cut from it — `git switch -c feature/<topic>
+origin/dev`, or a worktree on `origin/dev` — never from whatever is checked out, which is usually an
+older feature branch. Continuing an existing branch: merge `origin/dev` into it first. If the
+checkout has uncommitted changes, ask before switching. Before opening a PR, merge `origin/dev`
+again and run `python3 scripts/check.py` and the unit tests on the merged result.
+
 Use `python3 scripts/check.py` and `python3 -m unittest discover -s tests -v` for offline checks.
 `claude plugin validate --strict` is authoritative for Claude packaging.
 Run `python3 scripts/check_codex.py` to install into an isolated Codex home and verify skill
