@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.6.1
+
+- The ChatGPT app's "add a document" example expects an uploaded file the checks held for review to
+  be reported with its review link, instead of assuming its contents are live. `get_agent_status`
+  now lists the agent's files, which file is waiting for review and its link in the client hub
+  (matching AgentDeck server).
+
 ## 0.6.0
 
 - Needs the matching AgentDeck server. Skills read several guide topics in one `get_guide` call,
