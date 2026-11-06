@@ -73,7 +73,7 @@
               "description": "Add a document to the agent's knowledge",
               "prompt": "Add this price list to my AgentDeck agent and check that it now quotes the new prices.",
               "tools_triggered": "whoami, upload_document, get_agent_status, test_agent",
-              "expected_behavior": "Uploads the attached document, waits until it is indexed and shows a test answer that quotes a price from it."
+              "expected_behavior": "Uploads the attached document and waits until it is read. When it answers, shows a test answer that quotes a price from it; when the checks held it because its prices differ from the agent's other knowledge, says so and gives the link to review and publish it in the client hub."
             },
             {
               "description": "Explain how to go live",
