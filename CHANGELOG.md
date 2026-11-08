@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.6.2
+
+- The plugin carries its icon (`.claude-plugin/icon.png`) for its listing in Claude's plugin directory.
+- The plugin's README, the directory listing's text, says what the plugin sends and where it saves
+  files, and no longer says it connects to dev; the Codex notes name production as the default.
+
 ## 0.6.1
 
 - The ChatGPT app's "add a document" example expects an uploaded file the checks held for review to

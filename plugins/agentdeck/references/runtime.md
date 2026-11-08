@@ -19,10 +19,10 @@ Claude appends the invocation arguments to skills automatically.
 ## Codex CLI
 
 Install the Codex marketplace and plugin using the repository README. The packaged MCP connection
-uses the dev endpoint, signs in through the browser (`codex mcp login agentdeck`) and supplies the
+uses the production endpoint, signs in through the browser (`codex mcp login agentdeck`) and supplies the
 plugin-version header. The session launcher selects dev, prod or local explicitly and sets a
 session-only MCP configuration. Its `AGENTDECK_MCP_URL` is nonsecret; it identifies the expected
-environment. If that variable is absent, the packaged connection expects dev. A script may run the
+environment. If that variable is absent, the packaged connection expects production. A script may run the
 launcher with a token in `AGENTDECK_TOKEN`; do not read or print it.
 
 For missing authentication, ask the operator to run `codex mcp login agentdeck` in a terminal, or
